@@ -6,6 +6,9 @@ on:
     branches: [main]
   # trigger deployment manually
   workflow_dispatch:
+    
+permissions:
+  contents: write  # 전체 워크플로에 대해 읽기 및 쓰기 권한 설정
 
 jobs:
   docs:

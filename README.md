@@ -1,7 +1,6 @@
 💻프로젝트 명
 - ## 뉴아인 API DOCS 프로젝트
   - ### 모바일 앱 API DOCS 
-
 <br>
 
 # 📋목차
@@ -26,6 +25,7 @@
 <br>
 
 # 📚사용 기술
+[![deploy](https://github.com/nueyne-backend/developers-docs/actions/workflows/deploy.yml/badge.svg)](https://github.com/nueyne-backend/developers-docs/actions/workflows/deploy.yml)
 
 <div>
   <img src="https://img.shields.io/badge/Vue.js-42b883?style=for-the-badge&logo=vuedotjs&logoColor=white">

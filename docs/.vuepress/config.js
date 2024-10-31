@@ -23,7 +23,7 @@ export default defineUserConfig({
     },
   },
   head: [
-    ['link', { rel: 'icon', href: '/images/favicon.ico' }]
+    ['link', { rel: 'icon', href: '/developers-docs/images/favicon.ico' }]
   ],
 
   theme: defaultTheme({

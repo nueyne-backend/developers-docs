@@ -63,6 +63,8 @@
 
 # 🚀배포 방법
 
+1. git push main
+
 # 🧾참고 사항
 
 > - 커밋 메시지는 다음과 같은 파일의 규칙에 따라 작성을 권고합니다. : https://docs.google.com/document/d/1whegmi8hssWfXD53d-eDtjYF3vTgX75E/edit?usp=sharing&ouid=107526722292193607096&rtpof=true&sd=true

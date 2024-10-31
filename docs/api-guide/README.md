@@ -1,40 +1,33 @@
-# Guide
+# **API 가이드**
 
-## Introduction
-This entire website shows a simple VuePress template. The purpose is that users can directly clone this repository as a startup project for initializing a VuePress website, and then add custom configurations and functions based on this project.
+## **소개**
+Nu Eyne Developers는 앱에서 활용할 수 있는 API를 제공합니다.
 
-In addition, some plugins use cases are also shown, refer to [plugins](./plugin)
+Nu Eyne Developers API는 REST API이며 HTTPS로 통신합니다. 플랫폼에 상관없이 HTTPS를 지원하면 어디서나 API를 호출할 수 있습니다.
 
-## Why build this template website?
-Some beginners who are new to VuePress will encounter large or small problems after following the official tutorial, especially the file directory, packaging, and plugin installation. If you copy the official repository directly, it is large, so if there is such a simple initial template, it will be very convenient to start it directly.
+API를 호출할 때는 유효한 인증토큰이 있어야 합니다. 이는 각 플랫폼에서 제공하는 로그인 API를 통해 발급받을 수 있습니다. 개발 과정에서 사용할 테스트 계정은 관리자에게 문의하세요. @Jeongtae Kim
 
-And the corresponding plugin can directly see the effect, making it easier to use.
+## **엔드포인트**
+Nu Eyne Developers API의 엔드포인트 형식은 다음과 같습니다.
 
-## Usage
-
-### Step 1
-
-Download the repository code of Vuepress Template
-```sh
-git clone https://github.com/openHacking/vuepress-template.git
+```
+https://{host}/{api-path}?{query-string}  
 ```
 
-### Step 2
-Installation dependencies
-```sh
-cd vuepress-template
-yarn # or npm i
-```
+- `host`는 API 서버의 호스트입니다. 아래 중에 선택할 수 있습니다.
+    - dev: app.nueyne.dev
+    - prod: prod.nueyne.dev
+- `api-path`는 호출할 API의 경로입니다. 각 엔드포인트 상세 설명에서 확인할 수 있습니다. 
+  API 버전도 `api-path` 안에 포함됩니다.
+- `query-string`은 쿼리 파라미터의 집합입니다. 각 파라미터는 `key=value` 쌍이며 각각 '&'로 구분합니다.  
 
-### Step 3
-Start the project, then you can modify the configuration and write document content according to your needs
-```sh
-npm run docs:dev
-```
+## **요청**
+Nu Eyne Developers API 요청은 아래와 같은 규약을 따릅니다.
 
-### Step 4
-Packaged project
-```sh
-npm run docs:build
-```
-As a result, a `dist` folder will be generated in the `docs/.vuepress/` directory, which contains the packaged code
+- 모든 API 요청은 HTTPS로 전송합니다.
+
+- 파라미터는 쿼리 혹은 JSON 형식의 요청 본문으로 전달할 수 있습니다.
+
+## **요청 헤더**
+
+요청 본문을 파라미터로 사용하는 API는 HTTP 헤더에 Content-Type을 "application/json"으로 설정해야 합니다.

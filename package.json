@@ -90,6 +90,7 @@
     "magic-string": "^0.30.11",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
+    "markdown-it-container": "^4.0.0",
     "markdown-it-emoji": "^3.0.0",
     "mdurl": "^2.0.0",
     "medium-zoom": "^1.1.0",
@@ -131,7 +132,6 @@
     "rxjs": "^7.8.1",
     "safer-buffer": "^2.1.2",
     "sass-embedded": "^1.79.4",
-    "sass-embedded-win32-x64": "^1.79.4",
     "sax": "^1.4.1",
     "section-matter": "^1.0.0",
     "shebang-command": "^2.0.0",
@@ -164,6 +164,7 @@
     "vue": "^3.5.11",
     "vue-router": "^4.4.5",
     "vuepress": "^2.0.0-rc.17",
+    "vuepress-plugin-tabs": "^0.3.0",
     "whatwg-encoding": "^3.1.1",
     "whatwg-mimetype": "^4.0.0",
     "which": "^2.0.2",
@@ -172,6 +173,10 @@
   "devDependencies": {
     "@vuepress/bundler-vite": "^2.0.0-rc.18",
     "@vuepress/theme-default": "^2.0.0-rc.54"
+  },
+  "optionalDependencies": {
+    "sass-embedded-win32-x64": "1.79.4",
+    "sass-embedded-linux-x64": "^1.49.0"
   },
   "scripts": {
     "docs:dev": "vuepress dev docs",

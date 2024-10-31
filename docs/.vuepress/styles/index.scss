@@ -1,0 +1,46 @@
+:root {
+    scroll-behavior: smooth;
+
+    // layout vars
+    --sidebar-width: 22rem;
+    --sidebar-width-mobile: calc(var(--sidebar-width) * 0.82);
+}
+
+table {
+    width: 100%;            // 테이블 너비를 100%로 설정하여 가로로 꽉 차게 표시
+    table-layout: auto;     // 고정 레이아웃을 사용하여 셀 크기를 균등하게 조정
+  }
+  
+  th, td {
+    word-wrap: break-word;   // 긴 텍스트가 셀 안에서 줄바꿈되도록 설정
+    padding: 10px;           // 셀 안쪽 여백을 추가하여 가독성 향상
+    border: 1px solid #ddd;  // 셀 경계선 추가
+  }
+
+  
+.api-endpoint {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    color:#000000;
+    font-family: monospace;
+    display: inline-block;
+}
+
+.api-method {
+    color: #000000;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* 200 OK 스타일 */
+.ok-tab {
+    color: #28a745; /* 초록색 */
+    font-weight: bold;
+}
+  
+/* 401 ERROR 스타일 */
+.error-tab {
+    color: #dc3545; /* 빨간색 */
+    font-weight: bold;
+}

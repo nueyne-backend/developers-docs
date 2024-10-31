@@ -41,3 +41,10 @@ TODOs.md
 # Typescript build dist
 packages/@vuepress/shared-utils/lib/
 packages/@vuepress/shared-utils/types/
+
+# VuePress default temp directory
+.vuepress/.temp
+# VuePress default cache directory
+.vuepress/.cache
+# VuePress default build output directory
+.vuepress/dist

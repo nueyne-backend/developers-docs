@@ -4,7 +4,7 @@ title: Home
 heroText: Nu Eyne Developers Docs
 actions:
   - text: API Guide
-    link: /api-guide/
+    link: /en/api-guide/
     type: primary
 
 

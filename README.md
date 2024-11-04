@@ -1,6 +1,7 @@
 💻프로젝트 명
 - ## 뉴아인 API DOCS 프로젝트
   - ### 모바일 앱 API DOCS 
+
 <br>
 
 # 📋목차
@@ -63,7 +64,14 @@
 
 # 🚀배포 방법
 
-1. git push main
+- 해당 프로젝트는 Github Actions로 배포되어 Github Pages에서 서비스 하고 있습니다.
+- main 브랜치에 push 하면 .github/workflows/deploy.yml 에 정의된 대로 gh-pages 브랜치에 빌드된 파일이 자동으로 push 됩니다.
+- Github Actions Bot이 자동으로 배포합니다.
+
+1. main 브랜치에 push 하면 끝입니다.
+    ```bash
+    git push main
+    ```
 
 # 🧾참고 사항
 

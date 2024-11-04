@@ -13,7 +13,7 @@ All User APIs require an authentication token. Please include the token in the `
 ```
 Authorization: Bearer your_token_here
 ```
-Replace `your_token_here` with the refresh token obtained during the authentication process.
+Replace `your_token_here` with the access_token obtained during the authentication process.
 
 ## **Endpoints**
 
@@ -30,7 +30,7 @@ Fetches information about the logged-in user. The response includes Boolean valu
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Request Example**
 ```http
@@ -91,7 +91,7 @@ Updates information for the logged-in user.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 
 **Body Parameters**
@@ -166,7 +166,7 @@ Updates the user's preferences for push and marketing notifications.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -232,7 +232,7 @@ Stores the user's FCM token on the server to enable push notifications.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -293,7 +293,7 @@ Deletes the user account, deactivating the user's profile.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Request Example**
 ```http
@@ -346,7 +346,7 @@ Creates a child (sub-user) account and registers a device under this account. Th
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -432,7 +432,7 @@ Fetches information about a child (sub-user) account associated with the user. T
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Parameters**
 
@@ -494,7 +494,7 @@ Updates the information of a child (sub-user) account associated with the user.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -568,7 +568,7 @@ Deletes a child (sub-user) account and unregisters the associated device.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Parameters**
 

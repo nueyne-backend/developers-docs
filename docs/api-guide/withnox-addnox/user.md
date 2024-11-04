@@ -15,7 +15,7 @@ API를 호출하기전에 인증 페이지를 읽어보시길 추천드립니다
 ```
 Authorization: Bearer your_token_here
 ```
-`your_token_here` 에 인증 과정에서 획득한 refresh_token으로 대체해주세요.
+`your_token_here` 에 인증 과정에서 획득한 access_token으로 대체해주세요.
 
 ## **엔드포인트**
 
@@ -32,7 +32,7 @@ Authorization: Bearer your_token_here
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **요청 예시**
 ```http
@@ -93,7 +93,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 
 **Body Parameters**
@@ -169,7 +169,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -235,7 +235,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters:**
 
@@ -296,7 +296,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **요청 예시**
 ```http
@@ -349,7 +349,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -435,7 +435,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Parameters**
 
@@ -497,7 +497,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Body Parameters**
 
@@ -571,7 +571,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | refresh token|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
 **Parameters**
 

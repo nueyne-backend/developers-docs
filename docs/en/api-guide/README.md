@@ -16,7 +16,7 @@ https://{host}/{api-path}?{query-string}
     - dev: app.nueyne.dev
     - prod: prod.nueyne.dev
 - `api-path`: The path of the specific API being called. You can find details for each endpoint in the API documentation, and API versioning is included in this path.
-- `query-string`: A set of query parameters in `key=value` pairs, separated by `&`.
+- `path-variable`: is a variable within the path, represented by {variable_name}, which is replaced by a specific value.
 
 ## **Requests**
 Nu Eyne Developers API requests follow these guidelines:

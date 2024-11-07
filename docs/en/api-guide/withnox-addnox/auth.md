@@ -569,8 +569,8 @@ You need to pass the provider as a parameter, and only one of the two token para
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `id_token` <Badge type="info" text="optional" />| string    | It is essential if provider is `google`, `facebook`, `naver`, `kakao`.|
-| `access_token` <Badge type="info" text="optional" />| string    | It is essential if provider is `apple`.|
+| `id_token` <Badge type="info" text="optional" />| string    | It is essential if provider is `google`, `apple`, `naver`, `kakao`.|
+| `access_token` <Badge type="info" text="optional" />| string    | It is essential if provider is `facebook`.|
 
 **Request Example**
 ```http
@@ -647,6 +647,8 @@ Similar to the standard [email sign-up](#email-signup), an [SMS-verified](#verif
 | `gender` <Badge type="danger" text="required" />| string    | User's gender <br> - M : Male <br> - F : Femal <br> - N : Non-Binary <br> - P : Prefer Not to Say|
 | `phone` <Badge type="danger" text="required" />| string    | Phone number in E.164 format <br> - ex: +14155552671|
 | `register_type` <Badge type="danger" text="required" />| string    | Registration type <br> - E : Email <br> - S : Social|
+| `social_id` <Badge type="danger" text="required" />| string    | Please send social_token refer to provider  <br> - id_token : If provider is google, apple, naver, kakao <br> - access_token : If provider is facebook |
+| `social_type` <Badge type="danger" text="required" />| string    | Social provider value <br> - google <br> - apple  <br> - facebook <br> - naver  <br> - kakao |
 | `is_push_agree` <Badge type="danger" text="required" />| boolean    | Whether the user agrees to receive push notifications |
 | `is_marketing_agree` <Badge type="danger" text="required" />| boolean    | Whether the user agrees to receive marketing communications|
 | `national_code` <Badge type="danger" text="required" />| string    | Country code <br> - WITHNOX : KR <br> - ADDNOX : ISO code (2)

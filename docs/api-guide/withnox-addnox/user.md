@@ -8,6 +8,8 @@
 Withnox & Addnox 유저 API는 사용자 정보 불러오기, 업데이트 등과 연관된 자식 계정 관련 작업을 수행하는 기능입니다.
 API를 호출하기전에 인증 페이지를 읽어보시길 추천드립니다.
 
+API 흐름에 대한 시각적인 흐름도가 필요하다면 [Figma API Flow](https://www.figma.com/board/PhHUx8wj4FGvTMPBxTnzVc/ADDNOX-API-Flow?node-id=0-1&node-type=canvas&t=HyUVwsn2ws5yzZVZ-0) 페이지를 참고해주세요.
+
 ## **인증**
 
 모든 유저 API는 인증 토큰을 필요로 합니다. 인증을 하기위해서 `Authorization` header 에 인증 토큰을 넣어서 API를 호출해주세요.
@@ -630,25 +632,25 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 **Error Response Example**
 
-- `400 Bad Request`: The request is invalid or missing required parameters.
+- `401 Unauthorized`: 토큰이 잘못되었습니다.
   ```json
   {
-    "detail": "Invalid request or missing parameters"
+    "detail": "Could not validate credentials" // 토큰이 잘못되었습니다.
   }
   ```
-- `401 Unauthorized`: Authentication failed or the token is invalid.
+- `401 Unauthorized`: 토큰이 만료되었습니다.
   ```json
   {
-    "detail": "Could not validate credentials" // 토큰이 잘못되거나 만료되었습니다.
+    "detail": "Token is expired" // 토큰이 만료되었습니다.
   }
   ```
-- `404 Not Found`: The specified resource could not be found.
+- `404 Not Found`: 리소스를 찾을 수 없습니다. URI를 다시 확인해주세요.
   ```json
   {
     "detail": "Resource not found"
   }
   ```
-- `500 Internal Server Error`: An error occurred on the server.
+- `500 Internal Server Error`: 서버 에러입니다.
   ```json
   {
     "detail": "Internal server error. Please try again later."

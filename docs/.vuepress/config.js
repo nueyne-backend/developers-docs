@@ -41,6 +41,8 @@ export default defineUserConfig({
                 '/api-guide/withnox-addnox/', // 'withnox-addnox/README.md' 파일 참조
                 '/api-guide/withnox-addnox/auth.md', // 'withnox-addnox/auth.md' 파일 참조
                 '/api-guide/withnox-addnox/user.md', // 'withnox-addnox/user.md' 파일 참조
+                '/api-guide/withnox-addnox/device.md', // 'withnox-addnox/device.md' 파일 참조
+                '/api-guide/withnox-addnox/basestation.md', // 'withnox-addnox/basestation.md' 파일 참조
               ],
             },
           ],

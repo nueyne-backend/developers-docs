@@ -70,9 +70,11 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **사전 회원가입**
+### **~~사전 회원가입~~ Deprecated**
 
-해당 이메일과 비밀번호를 유저를 사전 생성하는 API입니다.
+~~해당 이메일과 비밀번호를 유저를 사전 생성하는 API입니다.~~
+
+더 이상 사용하지 않습니다.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -192,10 +194,12 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **이메일 아이디 조회**
+### **~~이메일 아이디 조회~~ Deprecated**
 
-로그인 과정에서 401 ERROR 회원가입이 완료되지 않았을때 사용자를 다시 회원가입 페이지로 리다이렉트 시키기 위해
-해당 API를 통해 회원가입을 완료할 `email_user_id`를 획득하시기 바랍니다.
+~~로그인 과정에서 401 ERROR 회원가입이 완료되지 않았을때 사용자를 다시 회원가입 페이지로 리다이렉트 시키기 위해~~
+~~해당 API를 통해 회원가입을 완료할 `email_user_id`를 획득하시기 바랍니다.~~
+
+더 이상 사용되지 않습니다.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -353,7 +357,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ### **이메일 회원가입**
 
 입력받은 정보를 통해 회원가입을 완료하는 API입니다.
-pre-signup 또는 get-id 를 통해 받은 `email_user_id` 와 SMS 인증 검증을 통해 받은 `valid_token`을 확인해주세요.
+SMS 인증 검증을 통해 받은 `valid_token`을 확인해주세요.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -371,7 +375,7 @@ pre-signup 또는 get-id 를 통해 받은 `email_user_id` 와 SMS 인증 검증
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
 | `email` <Badge type="danger" text="required" />| string    | 이메일 값입니다. |
-| `email_user_id` <Badge type="danger" text="required" />| integer    | 사전회원가입한 이메일 유저의 id 입니다.|
+| `password` <Badge type="danger" text="required" />| string    | 비밀번호 입니다.|
 | `first_name` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 이름입니다.|
 | `last_name` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 성입니다.|
 | `birthdate` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 생년월일입니다(yyyymmdd). <br> - 예시 : 19970101|
@@ -389,7 +393,7 @@ Authorization: Bearer valid_token_here
 Content-Type: application/json
 {
   "email": "string",
-  "email_user_id": 0,
+  "password": "string",
   "first_name": "string",
   "last_name": "string",
   "birthdate": "string",
@@ -427,13 +431,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 401             | Not authenticated    |  유효하지 않은 토큰입니다.|
-| 404              | User not found    |  사전회원가입한 유저가 없습니다.|
+| 400              | Email is not valid    |  유효하지 않은 이메일 형식입니다.|
+| 401             | Token is invalid    |  유효하지 않은 토큰입니다.|
 | 500              | Failed to sign up user    |  회원가입을 실패하였습니다.|
 
 ```json
 {
-  "detail": "User not found"
+  "detail": "Email is not valid"
 }
 ```
 :::

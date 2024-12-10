@@ -394,3 +394,88 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 }
 ```
 :::
+
+### **베이스 스테이션 센서 알람 정책 설정하기**
+
+베이스 스테이션의 센서 알람 정책을 설정합니다.
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/addnox/basestation/set-threshold
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `basestation_id` <Badge type="danger" text="required" />| integer    | 베이스 스테이션의 id 입니다.|
+| `mv_high` <Badge type="info" text="optional" />| integer    | 베이스 스테이션의 id 입니다.|
+| `hum_low` <Badge type="info" text="optional" />| integer    | 베이스 스테이션의 id 입니다.|
+| `hum_high` <Badge type="info" text="optional" />| integer    | 베이스 스테이션의 id 입니다.|
+| `temp_low` <Badge type="info" text="optional" />| integer    | 베이스 스테이션의 id 입니다.|
+| `temp_high` <Badge type="info" text="optional" />| integer    | 베이스 스테이션의 id 입니다.|
+| `noise_high` <Badge type="info" text="optional" />| integer    | 베이스 스테이션의 id 입니다.|
+
+**요청 예시**
+```http
+GET /api/v1/addnox/basestation/threshold/1 HTTPS
+Authorization: Bearer your_token_here
+{
+  "basestation_id": 0,
+  "mv_high": 0,
+  "hum_low": 0,
+  "hum_high": 0,
+  "light_high": 0,
+  "temp_low": 0,
+  "temp_high": 0,
+  "noise_high": 0
+}
+```
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+[
+    {
+        "id": 2,
+        "root_user_id": 4,
+        "basestation_id": 4,
+        "mv_high": 30,
+        "hum_low": 32,
+        "hum_high": 40,
+        "light_high": 30,
+        "temp_low": 10,
+        "temp_high": 90,
+        "noise_high": 15,
+        "created_at": "2024-11-19T11:26:44",
+        "updated_at": "2024-11-19T11:27:32"
+    }
+]
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | Device not found     | 베이스 스테이션을 찾을 수 없습니다.|
+| 403              | This device does not belong to the user     | 해당 베이스 스테이션은 계정에 등록되어 있지 않습니다.|
+
+
+```json
+{
+    "detail": "Device not found"
+}
+```
+:::

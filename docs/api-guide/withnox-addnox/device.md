@@ -438,10 +438,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **기기 치료시작 및 사용기록들 업로드**
+### **기기 사용 기록 업로드**
 
-기기의 사용기록들을 업로드하는 기능입니다. 기기 특성상 사용기록들을 업로드하면서 치료가 시작되기에 서버에서 임시 사용 기록을 만들어 전달해줍니다.
-치료가 끝나면 앱에서 PATCH Devlog로 치료기록을 완성하면 됩니다.
+기기의 사용기록들을 업로드하는 기능입니다. 사용기록이 여러개 일 수 있기 때문에 배열로 받습니다.
+
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -472,11 +472,11 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | Name | Type  | Description |
 |------|-------|-------------|
 | `treatment_date` <Badge type="danger" text="required" />| string | 기기의 사용 시작 시간 (ISO 8601 형식) |
-| `movement`   <Badge type="info" text="optional" />| integer | 기기의 IMU 센서 값 (현재 사용하지 않음) |
+| `movement`   <Badge type="danger" text="required" />| integer | 기기의 IMU 센서 값 (현재 사용하지 않음, any number) |
 | `finish_flag` <Badge type="danger" text="required" />| integer | 기기 사용 종료 유형, 자세한 구조는 아래 참조 |
 | `last_intensity`   <Badge type="danger" text="required" />| integer | 마지막 사용 강도 |
 | `treatment_time`   <Badge type="danger" text="required" />| integer | 사용 시간 (초 단위) |
-| `log_data`   <Badge type="info" text="optional" />| string | 사용 로그 데이터 (현재 사용하지 않음)|
+| `log_data`   <Badge type="danger" text="required" />| string | 사용 로그 데이터 (현재 사용하지 않음, 빈 string 값)|
 
 ::: tip finish_flag 값 설명
 
@@ -506,12 +506,12 @@ Authorization: Bearer your_token_here
     "device_id": 0,
     "unique_id": "string",
     "detail_data": {
-      "treatment_date": "string",
-      "movement": 0,
-      "finish_flag": "string",
-      "last_intensity": 0,
-      "treatment_time": 0,
-      "log_data": "string"
+      "treatment_date": "2024-12-05T14:06:47",
+      "movement": 1,
+      "finish_flag": "2",
+      "last_intensity": 2,
+      "treatment_time": 416,
+      "log_data": ""
     },
     "log_file_id": 0
   } 
@@ -523,25 +523,12 @@ Authorization: Bearer your_token_here
 
 @tab <span class="ok-tab">200 OK</span>
 
-서버에서 임시 사용기록을 만들어줍니다. id를 제외한 모든 데이터는 null로 옵니다.
-
-id를 저장해두었다가 치료가 종료되면 PATCH Devlog를 사용하실때 해당 id를 사용하시면 됩니다.
+데이터를 잘 저장하였으면 다음과 같이 리턴합니다.
 
 ```json
 {
-  "id": 0,
-  "device_id": 0,
-  "unique_id": "string",
-  "real_user_id": 0,
-  "detail_data": {
-    "treatment_date": "string",
-    "movement": 0,
-    "finish_flag": "string",
-    "last_intensity": 0,
-    "treatment_time": 0,
-    "log_data": "string"
-  },
-  "is_temp": true
+    "statusCode": 200,
+    "message": "Devlog saved successfully"
 }
 ```
 @tab <span class="error-tab">ERROR</span>
@@ -563,209 +550,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-
-### **기기 치료시작**
-
-기기의 사용기록이 없을 경우 업로드 과정없이 바로 치료를 시작할 때 사용하는 API 입니다. 서버에서 임시 사용 기록을 만들어 전달해줍니다.
-치료가 끝나면 앱에서 PATCH Devlog로 치료기록을 완성하면 됩니다.
-
-<div class="api-endpoint">
-  <span class="api-method">POST</span>
-  /api/v1/addnox/device/devlog/temp
-</div>
-
-**Headers**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
-
-**Body Parameters**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `device_id` <Badge type="danger" text="required" />| integer    | 기기의 id |
-| `unique_id` <Badge type="danger" text="required" />| string    | 기기의 unique_id (uuid) |
-| `detail_data` <Badge type="info" text="optional" />| json    | 기기 사용기록 (필수아님) |
-| `is_temp` <Badge type="info" text="optional" />| bool    | 임시 사용기록 여부(필수아님) |
-
-**요청 예시**
-```http
-POST /api/v1/addnox/device/devlog HTTPS
-Authorization: Bearer your_token_here
-{
-  "real_user_id": 0,
-  "device_id": 0,
-  "unique_id": "string"
-}
-```
-
-**응답 예시**
-::: tabs
-
-@tab <span class="ok-tab">200 OK</span>
-
-서버에서 임시 사용기록을 만들어줍니다. id를 제외한 모든 데이터는 null로 옵니다.
-
-id를 저장해두었다가 치료가 종료되면 PATCH Devlog를 사용하실때 해당 id를 사용하시면 됩니다.
-
-```json
-{
-  "id": 0,
-  "device_id": 0,
-  "unique_id": "string",
-  "real_user_id": 0,
-  "detail_data": {
-    "treatment_date": "string",
-    "movement": 0,
-    "finish_flag": "string",
-    "last_intensity": 0,
-    "treatment_time": 0,
-    "log_data": "string"
-  },
-  "is_temp": true
-}
-```
-@tab <span class="error-tab">ERROR</span>
-
-**오류 응답**
-
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
-
-| HTTP status code | detail           | description             |
-|------------------|------------------|-------------------------|
-| 401              | Not authorized user     | 유저 권한이 없습니다.|
-| 404              | Not Found Device  | 기기가 존재하지 않습니다.     |
-| 409              | Not Connected Device  | 등록되어있는 기기가 아닙니다.     |
-
-```json
-{
-    "detail": "Not Found Device"
-}
-```
-:::
-
-### **기기 치료종료**
-
-기기 사용이 종료되었을 경우 기기에서 보내준 로그 데이터를 서버에 업로드해 사용 기록을 완성하는 API입니다.
-POST devlog 또는 POST devlog/temp 에서 리턴해준 response의 id를 파라미터로 사용해주세요.
-
-<div class="api-endpoint">
-  <span class="api-method">PATCH</span>
-  /api/v1/addnox/device/devlog/{log_id}
-</div>
-
-**Headers**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
-
-**Body Parameters**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `device_id` <Badge type="danger" text="required" />| integer    | 기기의 id |
-| `unique_id` <Badge type="danger" text="required" />| string    | 기기의 unique_id (uuid) |
-| `detail_data` <Badge type="danger" text="required" />  | json       | 기기 사용기록, 자세한 구조는 아래 참조 |
-| `log_file_id` <Badge type="danger" text="required" />| integer    | 기기 사용기록 id (shortlog file_id 를 말한다)|
-
-<details>
-<summary><strong>📌 detail_data 구조 보기</strong></summary>
-
-`detail_data`는 다음과 같은 필드를 포함합니다:
-
-| Name | Type  | Description |
-|------|-------|-------------|
-| `treatment_date` <Badge type="danger" text="required" />| string | 기기의 사용 시작 시간 (ISO 8601 형식) |
-| `movement`   <Badge type="info" text="optional" />| integer | 기기의 IMU 센서 값 (현재 사용하지 않음) |
-| `finish_flag` <Badge type="danger" text="required" />| integer | 기기 사용 종료 유형, 자세한 구조는 아래 참조 |
-| `last_intensity`   <Badge type="danger" text="required" />| integer | 마지막 사용 강도 |
-| `treatment_time`   <Badge type="danger" text="required" />| integer | 사용 시간 (초 단위) |
-| `log_data`   <Badge type="info" text="optional" />| string | 사용 로그 데이터 (현재 사용하지 않음)|
-
-::: tip finish_flag 값 설명
-
-`finish_flag`는 다음과 같은 종료 상태를 나타냅니다:
-
-| 값 | 의미 |
-|----|------|
-| 1  | Normal Shutdown (정상적으로 치료를 끝낸 경우) |
-| 2  | Button Shutdown (치료 도중 전원 버튼을 길게 눌러 기기를 종료한 경우) |
-| 3  | App Shutdown (치료 도중 앱에서 기기 종료 명령을 눌러 기기를 종료한 경우) |
-| 4  | Faulty Contacts Shutdown (전극이 피부에 제대로 접촉되지 않아 기기가 종료된 경우) |
-| 5  | VBUS Shutdown (치료 도중 기기를 충전하여 치료가 종료된 경우) |
-| 6  | Unknown Shutdown (알 수 없는 이유로 종료된 경우) |
-
-:::
-</details>
-
-**요청 예시**
-```http
-PATCH /api/v1/addnox/device/devlog/1 HTTPS
-Authorization: Bearer your_token_here
-{
-  "real_user_id": 0,
-  "device_id": 0,
-  "unique_id": "string",
-  "detail_data": {
-    "treatment_date": "string",
-    "movement": 0,
-    "finish_flag": "string",
-    "last_intensity": 0,
-    "treatment_time": 0,
-    "log_data": "string"
-  },
-  "log_file_id": 0
-}
-```
-
-**응답 예시**
-::: tabs
-
-@tab <span class="ok-tab">200 OK</span>
-
-서버에서 완성된 사용기록을 리턴해줍니다.
-
-```json
-{
-  "id": 0,
-  "device_id": 0,
-  "unique_id": "string",
-  "real_user_id": 0,
-  "detail_data": {
-    "treatment_date": "string",
-    "movement": 0,
-    "finish_flag": "string",
-    "last_intensity": 0,
-    "treatment_time": 0,
-    "log_data": "string"
-  },
-  "is_temp": False,
-  "log_file_id": 0
-}
-```
-@tab <span class="error-tab">ERROR</span>
-
-**오류 응답**
-
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
-
-| HTTP status code | detail           | description             |
-|------------------|------------------|-------------------------|
-| 401              | Not authorized user     | 유저 권한이 없습니다.|
-| 404              | Not Found Device Log  | 존재하지 않는 로그 id 입니다.     |
-| 409              | Not Connected Device  | 등록되어있는 기기가 아닙니다.     |
-| 400              | Not Temp Device Log  | 임시 사용기록이 아닙니다.     |
-
-```json
-{
-    "detail": "Not Found Device Log"
-}
-```
-:::
 
 ## **공통 에러 처리**
 

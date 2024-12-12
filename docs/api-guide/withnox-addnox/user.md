@@ -285,59 +285,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
-### **유저 회원 탈퇴**
-
-유저가 회원탈퇴 또는 삭제할때 사용합니다.
-
-<div class="api-endpoint">
-  <span class="api-method">DELETE</span>
-  /api/v1/addnox/user/root-user
-</div>
-
-**Headers**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
-
-**요청 예시**
-```http
-DELETE /api/v1/addnox/user/root-user HTTPS
-Authorization: Bearer your_token_here
-```
-
-**응답 예시**
-
-::: tabs
-
-@tab <span class="ok-tab">200 OK</span>
-
-```json
-{
-  "statusCode": 200, 
-  "message": "Root user deleted"
-}
-```
-
-@tab <span class="error-tab"> ERROR</span>
-
-**오류 응답**
-
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
-
-| HTTP status code | detail           | description             |
-|------------------|------------------|-------------------------|
-| 404              | Sign in type is not found| 유저가 가입한 형식(이메일, 소셜)을 찾을 수 없습니다.|
-
-
-```json
-{
-    "detail": "Sign in type is not found"
-}
-```
-:::
-
-
 ### **유저 자식 계정 생성 및 기기 등록**
 
 유저의 자식(자녀) 계정을 생성하고 기기를 등록합니다. API 호출의 편의성을 위해 기기를 등록하는 과정이 합쳐져 있습니다. 따라서 해당 API에 대한 설명은 유저 페이지와 기기 페이지에 모두 존재합니다.
@@ -621,6 +568,58 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```json
 {
     "detail": "Real user is not found"
+}
+```
+:::
+
+### **회원 탈퇴**
+
+유저가 회원탈퇴 또는 삭제할때 사용합니다.
+
+<div class="api-endpoint">
+  <span class="api-method">DELETE</span>
+  /api/v1/addnox/user/root-user
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**요청 예시**
+```http
+DELETE /api/v1/addnox/user/root-user HTTPS
+Authorization: Bearer your_token_here
+```
+
+**응답 예시**
+
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+  "statusCode": 200, 
+  "message": "Root user deleted"
+}
+```
+
+@tab <span class="error-tab"> ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | Sign in type is not found| 유저가 가입한 형식(이메일, 소셜)을 찾을 수 없습니다.|
+
+
+```json
+{
+    "detail": "Sign in type is not found"
 }
 ```
 :::

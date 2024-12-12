@@ -259,14 +259,14 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값이 E.164 format 이어야 합니다. <br> - ex: +14155552671|
+| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값이 E.164 format 이어야 합니다. <br> - ex: +1012345678|
 
 **요청 예시**
 ```http
 POST /api/v1/addnox/auth/send-sms-auth
 Content-Type: application/json
 {
-  "phone": "string"
+  "phone": "+1012345678"
 }
 ```
 
@@ -311,7 +311,7 @@ SMS 인증 메세지로 전송된 6자리 번호를 검증하는 API 입니다.
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값이 E.164 format 이어야 합니다. <br> - ex: +14155552671|
+| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값이 E.164 format 이어야 합니다. <br> - ex: +1012345678|
 | `validnum` <Badge type="danger" text="required" />| string    | SMS 인증 메세지로 전송된 6자리 번호입니다.|
 
 **요청 예시**
@@ -319,8 +319,8 @@ SMS 인증 메세지로 전송된 6자리 번호를 검증하는 API 입니다.
 POST /api/v1/addnox/auth/phone-number-validation
 Content-Type: application/json
 {
-  "phone": "string",
-  "validnum": "string"
+  "phone": "+1012345678",
+  "validnum": "123456"
 }
 ```
 

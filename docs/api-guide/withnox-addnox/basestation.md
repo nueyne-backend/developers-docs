@@ -397,7 +397,8 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 ### **베이스 스테이션 센서 알람 정책 설정하기**
 
-베이스 스테이션의 센서 알람 정책을 설정합니다.
+베이스 스테이션의 센서 알람 정책을 설정합니다. 베이스 스테이션은 한 개의 정책만 가질 수 있습니다.
+이미 정책을 가지고 있는 베이스 스테이션의 정책을 설정할 경우 가장 마지막 정책으로 덮어씌워집니다.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -479,3 +480,171 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 }
 ```
 :::
+
+### **베이스 스테이션 센서 알람 정책 삭제하기**
+
+베이스 스테이션의 센서 알람 정책을 삭제합니다.
+
+<div class="api-endpoint">
+  <span class="api-method">DELETE</span>
+  /api/v1/addnox/basestation/threshold/delete/{threshold_id}
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `threshold_id` <Badge type="danger" text="required" />| integer    | 베이스 스테이션 정책 id 입니다.|
+
+
+**요청 예시**
+```http
+DELETE /api/v1/addnox/basestation/threshold/delete/1 HTTPS
+Authorization: Bearer your_token_here
+```
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+    "message": "Threshold deleted"
+}
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | Threshold not found     | 베이스 스테이션 정책을 찾을 수 없습니다.|
+| 403              | This threshold does not belong to the user     | 해당 베이스 스테이션 정책은 다른 계정 소유입니다.|
+
+
+```json
+{
+    "detail": "Threshold not found"
+}
+```
+:::
+
+### **베이스 스테이션 밝기 설정하기**
+
+베이스 스테이션의 조명 밝기를 설정합니다.
+
+<div class="api-endpoint">
+  <span class="api-method">PATCH</span>
+  /api/v1/addnox/basestation/threshold/{basestation_id}/light
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `basestation_id` <Badge type="danger" text="required" />| integer    | 베이스 스테이션 정책 id 입니다.|
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `brightness` <Badge type="danger" text="required" />| integer    | 설정할 베이스 스테이션의 밝기 값입니다.|
+
+::: tip brightness 값 설명
+
+`brightness`는 다음과 같은 값을 지원합니다:
+
+| 값 | 의미 |
+|----|------|
+| 100  | Brightness 100% (밝기 최대 상태) |
+| 75  | Brightness 100% (밝기 75% 상태) |
+| 50  | Brightness 100% (밝기 50% 상태) |
+| 25  | Brightness 100% (밝기 25% 상태) |
+| 0  | Brightness OFF (밝기 꺼짐 상태) |
+| 1  | Brightness AUTO (밝기 자동 조절 상태) |
+
+:::
+
+**요청 예시**
+```http
+PATCH /api/v1/addnox/basestation/threshold/1/light HTTPS
+Authorization: Bearer your_token_here
+{
+  "brightness": "1"
+}
+```
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+    "message": "Command sent"
+}
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | Device not found     | 베이스 스테이션을 찾을 수 없습니다.|
+| 403              | This device does not belong to the user     | 해당 베이스 스테이션은 계정에 등록되어 있지 않습니다.|
+
+
+```json
+{
+    "detail": "Device not found"
+}
+```
+:::
+
+## **공통 에러 처리**
+
+모든 엔드포인트에서 공통적으로 응답하는 에러코드입니다.
+
+**Error Response Example**
+
+- `401 Unauthorized`: 토큰이 잘못되었습니다.
+  ```json
+  {
+    "detail": "Could not validate credentials" // 토큰이 잘못되었습니다.
+  }
+  ```
+- `401 Unauthorized`: 토큰이 만료되었습니다.
+  ```json
+  {
+    "detail": "Token is expired" // 토큰이 만료되었습니다.
+  }
+  ```
+- `404 Not Found`: 리소스를 찾을 수 없습니다. URI를 다시 확인해주세요.
+  ```json
+  {
+    "detail": "Resource not found"
+  }
+  ```
+- `500 Internal Server Error`: 서버 에러입니다.
+  ```json
+  {
+    "detail": "Internal server error. Please try again later."
+  }
+  ```

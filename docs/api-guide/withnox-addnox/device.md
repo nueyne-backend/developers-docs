@@ -249,7 +249,7 @@ Authorization: Bearer your_token_here
 
 ```json
 {
-  "statuscode": 200,
+  "statusCode": 200,
   "message": "device unconnected"
 }
 ```
@@ -473,7 +473,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------|-------|-------------|
 | `treatment_date` <Badge type="danger" text="required" />| string | 기기의 사용 시작 시간 (ISO 8601 형식) |
 | `movement`   <Badge type="danger" text="required" />| integer | 기기의 IMU 센서 값 (현재 사용하지 않음, any number) |
-| `finish_flag` <Badge type="danger" text="required" />| integer | 기기 사용 종료 유형, 자세한 구조는 아래 참조 |
+| `finish_flag` <Badge type="danger" text="required" />| string | 기기 사용 종료 유형, 자세한 구조는 아래 참조 (추후 integer로 변경) |
 | `last_intensity`   <Badge type="danger" text="required" />| integer | 마지막 사용 강도 |
 | `treatment_time`   <Badge type="danger" text="required" />| integer | 사용 시간 (초 단위) |
 | `log_data`   <Badge type="danger" text="required" />| string | 사용 로그 데이터 (현재 사용하지 않음, 빈 string 값)|

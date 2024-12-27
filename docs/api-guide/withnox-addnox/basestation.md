@@ -557,7 +557,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `basestation_id` <Badge type="danger" text="required" />| integer    | 베이스 스테이션 정책 id 입니다.|
+| `basestation_id` <Badge type="danger" text="required" />| integer    | 베이스 스테이션 id 입니다.|
 
 **Body Parameters**
 

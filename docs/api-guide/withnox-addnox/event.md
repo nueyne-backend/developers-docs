@@ -733,7 +733,8 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-<!-- ### **PDF 리포트 내보내기 **
+
+### **PDF 리포트 내보내기**
 
 선택한 기간의 PDF report를 생성하는 API 입니다.
 
@@ -748,15 +749,56 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
-**Body Parameters**
+**Parameters**
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `basestation_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `start_date` <Badge type="danger" text="required" />| string    | 자식 계정의 id|
-| `end_date` <Badge type="info" text="optional" />| string    | 메모 |
-| `language` <Badge type="info" text="optional" />| string    | 이벤트 데이터 (아래 형식 참고)| -->
+| `basestation_id` <Badge type="danger" text="required" />| integer    | 베이스 스테이션의 id|
+| `start_date` <Badge type="danger" text="required" />| string    | 데이터 조회 시작 날짜 (YYYY-MM-DD)|
+| `end_date` <Badge type="danger" text="required" />| string    | 데이터 조회 끝 날짜 (YYYY-MM-DD) |
+| `language` <Badge type="info" text="optional" />| string    | PDF report 언어 (기본값: KR)|
+
+
+**요청 예시**
+```http
+GET /api/v1/addnox/pdf/report?real_user_id=7&basestation_id=2&start_date=2024-11-21&end_date=2024-11-27 HTTPS
+Authorization: Bearer your_token_here
+```
+
+
+::: tabs
+
+@tab <span class="ok-tab">200 OK </span>
+
+생성된 PDF Report 파일을 반환합니다.
+- Content-Type: application/pdf
+- content-dispostition: attachment; filename=Withnox_Report.pdf
+
+```file
+Withnox_Report.pdf
+```
+
+@tab <span class="error-tab"> ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 401              | Not authorized user     | 유저 권한이 없습니다.|
+| 404              | Real user is not found     | real_user_id를 확인해주세요.|
+| 403              | This device does not belong to the user    | 유저에게 등록된 베이스 스테이션이 아닙니다.|
+| 404              | Device not found    | basestation_id를 확인해주세요.|
+
+
+```json
+{
+  "detail":  "Not authorized user"
+}
+```
+:::
 
 
 ## **공통 에러 처리**

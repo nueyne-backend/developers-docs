@@ -592,7 +592,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `event_id` <Badge type="info" text="optional" />| integer    | 업데이트할 이벤트의 id|
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `memo` <Badge type="info" text="optional" />| string    | 메모 |
+| `memo` <Badge type="info" text="optional" />| string    | 메모 (최대 1000자)|
 | `event_data` <Badge type="info" text="optional" />| json    | 이벤트 데이터 (아래 형식 참고)|
 | `created_at` <Badge type="danger" text="required" />| string    | 생성 또는 업데이트할 이벤트의 날짜|
 

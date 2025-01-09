@@ -550,6 +550,100 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
+## **기기 IMU 센서 기록 업로드**
+
+기기의 움직임 센서에서 측정한 값들을 업로드하는 기능입니다.
+
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/addnox/device/movement
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
+| `device_id` <Badge type="danger" text="required" />| integer    | 기기의 id |
+| `log_file_id` <Badge type="danger" text="required" />| integer    | 기기 사용기록 id (shortlog file_id 를 말한다)|
+| `movement_data` <Badge type="danger" text="required" />  | json       | 기기 IMU 센서기록, 자세한 구조는 아래 참조 |
+
+<details>
+<summary><strong>📌 movement_data 구조 보기</strong></summary>
+
+`movement_data`는 다음과 같은 필드를 포함합니다:
+
+| Name | Type  | Description |
+|------|-------|-------------|
+| `val` <Badge type="danger" text="required" />| integer | IMU 센서값 |
+| `timestamp`   <Badge type="danger" text="required" />| integer | IMU 센서가 측정된 Timestamp(unix timestamp 형식) |
+
+
+</details>
+
+**요청 예시**
+```http
+POST /api/v1/addnox/device/movement HTTPS
+Authorization: Bearer your_token_here
+{
+  "real_user_id": 1,
+  "device_id": 2,
+  "log_file_id": 1,
+  "movement_data": [
+      {"val": 10, "timestamp": 1736411840},
+      {"val": 10, "timestamp": 1736411841},
+      {"val": 10, "timestamp": 1736411842},
+      {"val": 10, "timestamp": 1736411843},
+      {"val": 10, "timestamp": 1736411844},
+      {"val": 10, "timestamp": 1736411845},
+      {"val": 10, "timestamp": 1736411846},
+      {"val": 10, "timestamp": 1736411847},
+      {"val": 10, "timestamp": 1736411848},
+      {"val": 10, "timestamp": 1736411849},
+      {"val": 10, "timestamp": 1736411850},
+  ],
+}
+```
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+데이터를 잘 저장하였으면 다음과 같이 리턴합니다.
+
+```json
+{
+    "statusCode": 200,
+    "message": "Movement log saved successfully"
+}
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 401              | Not authorized user     | 유저 권한이 없습니다.|
+| 404              | Not Found User  | 자식계정이 존재하지 않습니다.     |
+| 404              | Not Found Device  | 기기가 존재하지 않습니다.     |
+| 409              | Not Connected Device  | 등록되어있는 기기가 아닙니다.     |
+
+```json
+{
+    "detail": "Not Found Device"
+}
+```
+:::
 
 ## **공통 에러 처리**
 

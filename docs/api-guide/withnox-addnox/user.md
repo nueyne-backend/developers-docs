@@ -368,6 +368,93 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
+### **유저 자식 계정 생성 및 기기 등록(V2)**
+
+유저의 자식(자녀) 계정을 생성하고 기기를 등록합니다. API 호출의 편의성을 위해 기기를 등록하는 과정이 합쳐져 있습니다. 
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v2/addnox/user/create-real-user
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `first_name` <Badge type="danger" text="required" />| string    | 생성할 자식 계정의 전체 이름입니다|
+| `last_name` <Badge type="danger" text="required" />| string  | ~~생성할 자식 계정의 성입니다~~  빈 String 값을 보내주세요  |
+| `birthdate` <Badge type="danger" text="required" />| string  | 생성할 자식 계정의 생년월일입니다 (yyyymmdd) <br> - 예시 : 19970101|
+| `gender` <Badge type="danger" text="required" />| string  | 사용자의 성별 <br> - M : 남성 <br> - F : 여성 <br> - N : 논바이너리 <br> - P : 알려주고 싶지 않음 |
+| `serial_code` <Badge type="danger" text="required" />| string  | 등록할 기기의 시리얼 코드 입니다   |
+| `mac_id` <Badge type="danger" text="required" />| string  | 등록할 기기의 MAC 주소 입니다 (끝에 : 을 제외하고 4개의 문자 값을 대문자로 보내주세요)  |
+| `unique_id` <Badge type="danger" text="required" />| string  | 등록할 기기의 uuid 입니다   |
+
+
+
+**요청 예시:**
+```http
+POST /api/v2/addnox/user/create-real-user HTTPS
+Authorization: Bearer your_token_here
+Content-Type: application/json
+{
+  "first_name": "test",
+  "last_name": "",
+  "birthdate": "19970101",
+  "gender": "F",
+  "serial_code": "SL20401000",
+  "mac_id": "41AD",
+  "unique_id": "unique"
+}
+```
+
+**응답 예시:**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+  "real_user_id": 1,
+  "first_name": "test",
+  "last_name": "",
+  "birthdate": "19970101",
+  "gender": "F",
+  "device_id": 1,
+  "now_firmware_id": 1,
+  "unique_id": "unique",
+  "serial_code": "SL20401000",
+  "device_alias": "string",
+  "last_log_file_id": 0,
+  "created_at": "2024-10-28T08:09:47.889Z"
+}
+```
+@tab <span class="error-tab"> ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 409              | Real user create failed| 자식 계정 생성 실패.|
+| 400              | Serial code is not valid| 올바르지 않은 시리얼 코드입니다.|
+| 401              | Not authorized user  | 권한이 없는 유저입니다.     |
+| 404              | Not Found Device  | 해당 기기를 찾을 수 없습니다.     |
+| 409              | Already Connected Device  | 이미 다른 유저에게 연결된 기기입니다.     |
+
+```json
+{
+    "detail": "Already Connected Device"
+}
+```
+:::
+
 
 ### **유저 자식 계정 조회**
 

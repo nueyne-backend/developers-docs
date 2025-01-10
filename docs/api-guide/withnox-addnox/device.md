@@ -550,7 +550,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-## **기기 IMU 센서 기록 업로드**
+### **기기 IMU 센서 기록 업로드**
 
 기기의 움직임 센서에서 측정한 값들을 업로드하는 기능입니다.
 
@@ -573,7 +573,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
 | `device_id` <Badge type="danger" text="required" />| integer    | 기기의 id |
 | `log_file_id` <Badge type="danger" text="required" />| integer    | 기기 사용기록 id (shortlog file_id 를 말한다)|
-| `movement_data` <Badge type="danger" text="required" />  | json       | 기기 IMU 센서기록, 자세한 구조는 아래 참조 |
+| `movement_data` <Badge type="danger" text="required" />  | array of objects       | 기기 IMU 센서기록, 자세한 구조는 아래 참조 |
 
 <details>
 <summary><strong>📌 movement_data 구조 보기</strong></summary>
@@ -608,6 +608,7 @@ Authorization: Bearer your_token_here
       {"val": 10, "timestamp": 1736411848},
       {"val": 10, "timestamp": 1736411849},
       {"val": 10, "timestamp": 1736411850},
+      // and more..
   ],
 }
 ```

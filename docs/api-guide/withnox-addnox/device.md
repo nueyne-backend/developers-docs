@@ -572,7 +572,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
 | `device_id` <Badge type="danger" text="required" />| integer    | 기기의 id |
-| `log_file_id` <Badge type="danger" text="required" />| integer    | 기기 사용기록 id (shortlog file_id 를 말한다)|
 | `movement_data` <Badge type="danger" text="required" />  | array of objects       | 기기 IMU 센서기록, 자세한 구조는 아래 참조 |
 
 <details>

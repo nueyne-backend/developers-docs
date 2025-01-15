@@ -19,7 +19,7 @@ Authorization: Bearer your_token_here
 
 ## **엔드포인트**
 
-### **차트 데이터 조회**
+<!-- ### **차트 데이터 조회**
 
 분석 탭에서 차트를 그리기 위해 불러오는 API입니다. 파라미터의 기본값은 0으로 서버 기준 당일 날짜로 조회합니다.
 Figma 기획상 차트는 최근 7일과 최근 한달, 두 가지 기간만 존재하고 있습니다. (요청 예시 참고)
@@ -288,7 +288,200 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 }
 ```
 :::
+ -->
 
+### **최근 차트 데이터 조회**
+
+분석 탭에서 차트를 그리기 위해 불러오는 API입니다.
+보내준 날짜를 기준으로 최근 7일전 혹은 최근 30일전의 데이터를 보내줍니다.
+
+
+<div class="api-endpoint">
+  <span class="api-method">GET</span>
+  /api/v1/addnox/chart/recent
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
+| `select_mode` <Badge type="info" text="optional" />| integer    | 조회할 데이터의 기간 단위 선택 (기본값 0)|
+| `current_date` <Badge type="info" text="optional" />| integer    | 조회할 데이터 기준 날짜 (YYYY-MM-DD) (기본값 서버기준 오늘날짜) |
+
+::: tip 파라미터 값 설명
+
+`select_mode`는 다음과 같은 값을 지원합니다:
+
+| select_mode | 설명 | 
+|----|------|
+| 0  | 주 단위 조회	 | 
+| 1  | 월 단위 조회 |
+
+`current_date`는 값이 Optional 이지만 기본값은 서버기준(미국 동부)으로 오늘 날짜를 사용하므로
+앱 사용자의 위치에 따라서 시차로 인해 오차가 생길 수도 있습니다. 그래서 필수로 보내주시면 좋습니다!
+
+:::
+
+**요청 예시**
+1. **최근 7일 차트 데이터 불러오기**
+```http
+GET /api/v1/addnox/chart/recent?real_user_id=1?current_date=2025-01-15 HTTPS
+Authorization: Bearer your_token_here
+```
+**설명**: 최근 7일의 데이터를 조회합니다.
+
+2. **최근 30일 차트 데이터 불러오기**
+```http
+GET /api/v1/addnox/chart/recent?real_user_id=1?current_date=2025-01-15?select_mode=1 HTTPS
+Authorization: Bearer your_token_here
+```
+**설명**: 최근 30일의 데이터를 조회합니다.
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK (주, 월 단위 조회)</span>
+- 주, 월 단위 조회 (select_mode = 0 or 1) 일 경우 일 별로 데이터를 집계.
+- 현재는 최근 데이터를 보내줄때 값이 있을때만 해당 날짜와 데이터를 보내주는데 추후 차트 개발 편의성을 위해 데이터가 없어도 보내줄 계획입니다.
+
+동일한 날짜에 치료기록이 여러개일 경우 사용 시간과 움직임은 **합계**, 마지막 사용 강도는 **평균**(소수점 1자리)으로 계산합니다.
+`avg_`로 시작하는 값은 **Float형** 타입이며 기본값은 **0**입니다.
+
+```json
+{
+    "treatment_time_data": [
+        {
+            "treatment_date": "2024-11-21", // str 형
+            "treatment_time": 25200 // int 형
+        },
+        {
+            "treatment_date": "2024-11-22",
+            "treatment_time": 25200
+        },
+        {
+            "treatment_date": "2024-11-23",
+            "treatment_time": 28800
+        },
+        {
+            "treatment_date": "2024-11-24",
+            "treatment_time": 32400
+        },
+        {
+            "treatment_date": "2024-11-25",
+            "treatment_time": 32400
+        },
+        {
+            "treatment_date": "2024-11-26",
+            "treatment_time": 25200
+        },
+        {
+            "treatment_date": "2024-11-27",
+            "treatment_time": 25200
+        }
+    ],
+    "treatment_intensity_data": [
+        {
+            "treatment_date": "2024-11-21", // str 형
+            "last_intensity": 5.0  // float 형
+        },
+        {
+            "treatment_date": "2024-11-22",
+            "last_intensity": 5.0
+        },
+        {
+            "treatment_date": "2024-11-23",
+            "last_intensity": 2.0
+        },
+        {
+            "treatment_date": "2024-11-24",
+            "last_intensity": 4.0
+        },
+        {
+            "treatment_date": "2024-11-25",
+            "last_intensity": 8.0
+        },
+        {
+            "treatment_date": "2024-11-26",
+            "last_intensity": 5.0
+        },
+        {
+            "treatment_date": "2024-11-27",
+            "last_intensity": 5.0
+        }
+    ],
+    "movement_data": [
+        {
+            "treatment_date": "2024-11-21", // str 형
+            "movement": 80  // int 형
+        },
+        {
+            "treatment_date": "2024-11-22",
+            "movement": 50
+        },
+        {
+            "treatment_date": "2024-11-23",
+            "movement": 50
+        },
+        {
+            "treatment_date": "2024-11-24",
+            "movement": 40
+        },
+        {
+            "treatment_date": "2024-11-25",
+            "movement": 50
+        },
+        {
+            "treatment_date": "2024-11-26",
+            "movement": 60
+        },
+        {
+            "treatment_date": "2024-11-27",
+            "movement": 30
+        }
+    ],
+    "avg_treatment_time": 27771.4,  // float 형
+    "avg_treatment_intensity": 4.9,  // float 형
+    "avg_movement": 51.4  // float 형
+}
+```
+
+@tab <span class="ok-tab">200 OK (no-data)</span>
+해당 기간에 데이터가 없을 경우 빈값으로 옵니다.
+```json
+{
+    "treatment_time_data": [],
+    "treatment_intensity_data": [],
+    "movement_data": [],
+    "avg_treatment_time": 0,
+    "avg_treatment_intensity": 0,
+    "avg_movement": 0
+}
+```
+
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 400              | Invalid mode. Use 0 for recent 7 days or 1 for recent 30 days     | select_mode 값을 확인해 주세요.|
+| 401              | Not authorized user     | real_user_id 값을 확인해 주세요.|
+
+```json
+{
+    "detail": "Invalid mode. Use 0 for recent 7 days or 1 for recent 30 days"
+}
+```
+:::
 
 ### **기록 데이터 조회**
 

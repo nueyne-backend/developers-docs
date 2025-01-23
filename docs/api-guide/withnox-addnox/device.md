@@ -594,7 +594,6 @@ Authorization: Bearer your_token_here
 {
   "real_user_id": 1,
   "device_id": 2,
-  "log_file_id": 1,
   "movement_data": [
       {"val": 10, "timestamp": 1736411840},
       {"val": 10, "timestamp": 1736411841},

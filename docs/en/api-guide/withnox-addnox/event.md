@@ -1,300 +1,27 @@
-# **분석 & 기록**
+# **Analysis & History**
 
-해당 페이지는 Withnox & Addnox 프로젝트의 분석과 기록에 관련된 API를 설명해놓은 페이지입니다.
+This page describes the Analysis & History APIs for the Withnox & Addnox projects.
 
-## **소개**
+## **Introduction**
 
-Withnox & Addnox 분석 & 기록 API는 캘린더에서 사용 기록 조회, 병원 & 복약 기록, 분석 차트 등의 작업을 수행합니다. API를 호출하기전에 인증 페이지를 읽어보시길 추천드립니다.
+The Withnox & Addnox Analysis & History APIs provides functionalities for get recent chart, get event data, create event data, and export pdf report.
 
-API 흐름에 대한 시각적인 흐름도가 필요하다면 [Figma API Flow](https://www.figma.com/board/PhHUx8wj4FGvTMPBxTnzVc/ADDNOX-API-Flow?node-id=0-1&node-type=canvas&t=HyUVwsn2ws5yzZVZ-0) 페이지를 참고해주세요.
+If you need some imagination of API Flow please checkout the [Figma API Flow!](https://www.figma.com/board/PhHUx8wj4FGvTMPBxTnzVc/ADDNOX-API-Flow?node-id=0-1&node-type=canvas&t=HyUVwsn2ws5yzZVZ-0)
 
-## **인증**
+## **Authentication**
 
-모든 분석 & 기록 API는 인증 토큰을 필요로 합니다. 인증을 하기위해서 `Authorization` header 에 인증 토큰을 넣어서 API를 호출해주세요.
+Some authentication APIs require an authentication token. Please include the authentication token in the `Authorization` header to make authenticated API requests.
 
 ```
 Authorization: Bearer your_token_here
 ```
-`your_token_here` 에 인증 과정에서 획득한 access_token으로 대체해주세요.
+Replace `your_token_here` with the access token obtained during the authentication process.
 
-## **엔드포인트**
+## **Endpoints**
 
-<!-- ### **차트 데이터 조회**
+### **Get Recent Chart Data**
 
-분석 탭에서 차트를 그리기 위해 불러오는 API입니다. 파라미터의 기본값은 0으로 서버 기준 당일 날짜로 조회합니다.
-Figma 기획상 차트는 최근 7일과 최근 한달, 두 가지 기간만 존재하고 있습니다. (요청 예시 참고)
-
-다만 추후 기획이 변경될 수 있기에 기간을 커스텀할 수 있습니다.
-
-<div class="api-endpoint">
-  <span class="api-method">GET</span>
-  /api/v1/addnox/chart
-</div>
-
-**Headers**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
-
-**Parameters**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `select_mode` <Badge type="info" text="optional" />| integer    | 조회할 데이터의 기간 단위 선택 (기본값 0)|
-| `year` <Badge type="info" text="optional" />| integer    | 조회할 연도 선택 (기본값 0) |
-| `select_data` <Badge type="info" text="optional" />| integer    | 선택한 기간에 따라 특정 값 지정 (기본값 0)|
-
-::: tip 파라미터 값 설명
-
-`select_mode`는 다음과 같은 값을 지원합니다:
-
-| select_mode | 설명 | 
-|----|------|
-| 0  | 주 단위 조회	 | 
-| 1  | 월 단위 조회 |
-| 2  | 분기 단위 조회 |
-| 3  | 연 단위 조회 |
-
-**`select_data` 값 설명**
-
-`select_mode`에 따라 `select_data` 값의 범위가 달라집니다.
-
-**`select_mode = 0` (주 단위)**
-- **0**: 오늘 주 (`today.week`)  
-- **1 ~ 54**: 주 번호 선택 (`weeknum`)  
-
-**`select_mode = 1` (월 단위)**
-- **0**: 오늘 월 (`today.month`)  
-- **1 ~ 12**: 월 번호 선택 (`monthnum`)  
-
-**`select_mode = 2` (분기 단위)**
-- **0**: 오늘 분기 (`today.quarter`)  
-- **1 ~ 4**: 분기 번호 선택 (`quarternum`)  
-
-**`select_mode = 3` (연 단위)**
-- 연단위는 select_data를 사용하지않습니다. year 파라미터를 사용해주세요.
-
-:::
-
-**요청 예시**
-1. **이번 주 차트 데이터 불러오기**
-```http
-GET /api/v1/addnox/chart?real_user_id=1 HTTPS
-Authorization: Bearer your_token_here
-```
-**설명**: 이번 주의 데이터를 조회합니다.
-
-2. **이번 달 차트 데이터 불러오기**
-```http
-GET /api/v1/addnox/chart?real_user_id=1&select_mode=1 HTTPS
-Authorization: Bearer your_token_here
-```
-**설명**: 이번 달의 데이터를 조회합니다.
-
-3. **커스텀 기간의 차트 데이터 불러오기**
-```http
-/api/v1/addnox/chart?real_user_id=1&select_mode=0&select_data=15 // 15번째 주의 데이터를 조회합니다.
-/api/v1/addnox/chart?real_user_id=1&select_mode=1&select_data=5 // 5월 데이터를 조회합니다.
-/api/v1/addnox/chart?real_user_id=1&select_mode=2&select_data=0 // 오늘 기준 분기를 조회합니다.
-/api/v1/addnox/chart?real_user_id=1&select_mode=3 // 오늘 연도의 데이터를 조회합니다.
-```
-**설명**: 원하는 기간의 데이터를 조회합니다.
-
-**응답 예시**
-::: tabs
-
-@tab <span class="ok-tab">200 OK (주, 월 단위 조회)</span>
-select_mode에 따라 데이터 집계 방식이 다릅니다. 
-- 주, 월 단위 조회 (select_mode = 0 or 1) 일 경우 일 별로 데이터를 집계.
-- 분기, 년도 단위 조회일 경우 월 별로 데이터를 집계.
-
-동일한 날짜에 치료기록이 여러개일 경우 사용 시간과 움직임은 **합계**, 마지막 사용 강도는 **평균**(소수점 1자리)으로 계산합니다.
-
-```json
-{
-    "treatment_time_data": [
-        {
-            "treatment_date": "2024-11-21", // str 형
-            "treatment_time": 25200 // int 형
-        },
-        {
-            "treatment_date": "2024-11-22",
-            "treatment_time": 25200
-        },
-        {
-            "treatment_date": "2024-11-23",
-            "treatment_time": 28800
-        },
-        {
-            "treatment_date": "2024-11-24",
-            "treatment_time": 32400
-        },
-        {
-            "treatment_date": "2024-11-25",
-            "treatment_time": 32400
-        },
-        {
-            "treatment_date": "2024-11-26",
-            "treatment_time": 25200
-        },
-        {
-            "treatment_date": "2024-11-27",
-            "treatment_time": 25200
-        }
-    ],
-    "treatment_intensity_data": [
-        {
-            "treatment_date": "2024-11-21", // str 형
-            "last_intensity": 5.0  // float 형
-        },
-        {
-            "treatment_date": "2024-11-22",
-            "last_intensity": 5.0
-        },
-        {
-            "treatment_date": "2024-11-23",
-            "last_intensity": 2.0
-        },
-        {
-            "treatment_date": "2024-11-24",
-            "last_intensity": 4.0
-        },
-        {
-            "treatment_date": "2024-11-25",
-            "last_intensity": 8.0
-        },
-        {
-            "treatment_date": "2024-11-26",
-            "last_intensity": 5.0
-        },
-        {
-            "treatment_date": "2024-11-27",
-            "last_intensity": 5.0
-        }
-    ],
-    "movement_data": [
-        {
-            "treatment_date": "2024-11-21", // str 형
-            "movement": 80  // int 형
-        },
-        {
-            "treatment_date": "2024-11-22",
-            "movement": 50
-        },
-        {
-            "treatment_date": "2024-11-23",
-            "movement": 50
-        },
-        {
-            "treatment_date": "2024-11-24",
-            "movement": 40
-        },
-        {
-            "treatment_date": "2024-11-25",
-            "movement": 50
-        },
-        {
-            "treatment_date": "2024-11-26",
-            "movement": 60
-        },
-        {
-            "treatment_date": "2024-11-27",
-            "movement": 30
-        }
-    ],
-    "avg_treatment_time": 27771.4,  // float 형
-    "avg_treatment_intensity": 4.9,  // float 형
-    "avg_movement": 51.4  // float 형
-}
-```
-
-@tab <span class="ok-tab">200 OK (월, 분기 단위 조회)</span>
-select_mode에 따라 데이터 집계 방식이 다릅니다. 
-- 주, 월 단위 조회 (select_mode = 0 or 1) 일 경우 일 별로 데이터를 집계.
-- 분기, 년도 단위 조회일 경우 월 별로 데이터를 집계.
-
-동일한 날짜에 치료기록이 여러개일 경우 사용 시간과 움직임은 **합계**, 마지막 사용 강도는 **평균**(소수점 1자리)으로 계산합니다.
-
-```json
-{
-    "treatment_time_data": [
-        {
-            "treatment_date": "2024-11-30", // str 형
-            "treatment_time": 194400 // int 형
-        },
-        {
-            "treatment_date": "2024-12-31",
-            "treatment_time": 75600
-        }
-    ],
-    "treatment_intensity_data": [
-        {
-            "treatment_date": "2024-11-30", // str 형
-            "last_intensity": 4.9  // float 형
-        },
-        {
-            "treatment_date": "2024-12-31",
-            "last_intensity": 20.3  
-        }
-    ],
-    "movement_data": [
-        {
-            "treatment_date": "2024-11-30", // str 형
-            "movement": 360 // int 형
-        },
-        {
-            "treatment_date": "2024-12-31",
-            "movement": 117
-        }
-    ], 
-    "avg_treatment_time": 135000.0,  // float 형
-    "avg_treatment_intensity": 12.6,  // float 형
-    "avg_movement": 238.5  // float 형
-}
-```
-
-@tab <span class="ok-tab">200 OK (no-data)</span>
-해당 기간에 데이터가 없을 경우 빈값으로 옵니다.
-```json
-{
-    "treatment_time_data": [],
-    "treatment_intensity_data": [],
-    "movement_data": [],
-    "avg_treatment_time": 0,
-    "avg_treatment_intensity": 0,
-    "avg_movement": 0
-}
-```
-
-@tab <span class="error-tab">ERROR</span>
-
-**오류 응답**
-
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
-
-| HTTP status code | detail           | description             |
-|------------------|------------------|-------------------------|
-| 400              | Invalid mode     | select_mode 값을 확인해 주세요.|
-| 422              | select_data for mode 0 (week) must be between 0 and 54     | select_data 값을 확인해 주세요.|
-| 422              | select_data for mode 1 (month) must be between 0 and 12     | select_data 값을 확인해 주세요.|
-| 422              | select_data for mode 2 (quarter) must be between 0 and 4     | select_data 값을 확인해 주세요.|
-| 422              | The year must be between 1 and 9999     | year 값을 확인해 주세요.|
-
-```json
-{
-    "detail": "Invalid mode"
-}
-```
-:::
- -->
-
-### **최근 차트 데이터 조회**
-
-분석 탭에서 차트를 그리기 위해 불러오는 API입니다.
-보내준 날짜를 기준으로 최근 7일전 혹은 최근 30일전의 데이터를 보내줍니다.
-
+The API below fetches chart data based on the given date. It returns data from the past 7 days or the past 30 days.
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
@@ -311,55 +38,57 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `select_mode` <Badge type="info" text="optional" />| integer    | 조회할 데이터의 기간 단위 선택 (기본값 0)|
-| `current_date` <Badge type="info" text="optional" />| string    | 조회할 데이터 기준 날짜 (YYYY-MM-DD) (기본값 서버기준 오늘날짜) |
+| `real_user_id` <Badge type="danger" text="required" />| integer    | Child account ID|
+| `select_mode` <Badge type="info" text="optional" />| integer    | Time period selection (Default: 0)|
+| `current_date` <Badge type="info" text="optional" />| integer    | Base date for data retrieval (YYYY-MM-DD) (Default: Server's current date) |
 
-::: tip 파라미터 값 설명
+::: tip Parameter Details
 
-`select_mode`는 다음과 같은 값을 지원합니다:
+`select_mode`: Determines the time period for data aggregation.
 
-| select_mode | 설명 | 
+| select_mode | Description | 
 |----|------|
-| 0  | 주 단위 조회	 | 
-| 1  | 월 단위 조회 |
+| 0  | Weekly data	 | 
+| 1  | Monthly data |
 
-`current_date`는 값이 Optional 이지만 기본값은 서버기준(미국 동부)으로 오늘 날짜를 사용하므로
-앱 사용자의 위치에 따라서 시차로 인해 오차가 생길 수도 있습니다. 그래서 필수로 보내주시면 좋습니다!
-
+`current_date`: Although optional, it is recommended to send this parameter to avoid potential time zone discrepancies caused by server time (Eastern Time, USA).
 :::
 
-**요청 예시**
-1. **최근 7일 차트 데이터 불러오기**
+**Request Examples**
+1. **Fetch Chart Data for the Past 7 Days**
 ```http
 GET /api/v1/addnox/chart/recent?real_user_id=1?current_date=2025-01-15 HTTPS
 Authorization: Bearer your_token_here
 ```
-**설명**: 최근 7일의 데이터를 조회합니다.
+**Description**: Retrieves data from the past 7 days.
 
-2. **최근 30일 차트 데이터 불러오기**
+2. **Fetch Chart Data for the Past 30 Days**
 ```http
 GET /api/v1/addnox/chart/recent?real_user_id=1?current_date=2025-01-15?select_mode=1 HTTPS
 Authorization: Bearer your_token_here
 ```
-**설명**: 최근 30일의 데이터를 조회합니다.
+**Description**: Retrieves data from the past 30 days.
 
-**응답 예시**
+**Response Example**
 ::: tabs
 
-@tab <span class="ok-tab">200 OK (주, 월 단위 조회)</span>
-- 주, 월 단위 조회 (select_mode = 0 or 1) 일 경우 일 별로 데이터를 집계.
-- 현재는 최근 데이터를 보내줄때 값이 있을때만 해당 날짜와 데이터를 보내주는데 추후 차트 개발 편의성을 위해 데이터가 없어도 보내줄 계획입니다.
+@tab <span class="ok-tab">200 OK (Weekly or Monthly Data)</span>
+- For both weekly (select_mode = 0) and monthly (select_mode = 1) data retrieval, the API aggregates data by date.
+- Currently, the API only returns dates with recorded data. In the future, it will be updated to return all dates within the selected period, even if no data is available.
 
-동일한 날짜에 치료기록이 여러개일 경우 사용 시간과 움직임은 **합계**, 마지막 사용 강도는 **평균**(소수점 1자리)으로 계산합니다.
-`avg_`로 시작하는 값은 **Float형** 타입이며 기본값은 **0**입니다.
+When there are multiple treatment records on the same date:
+
+- **treatment_time** and **movement** values are summed.
+- **last_intensity** is averaged to **one decimal place**.
+
+Fields prefixed with `avg_` are of type **Float** with a default value of **0**.
 
 ```json
 {
     "treatment_time_data": [
         {
-            "treatment_date": "2024-11-21", // str 형
-            "treatment_time": 25200 // int 형
+            "treatment_date": "2024-11-21", // str 
+            "treatment_time": 25200 // int 
         },
         {
             "treatment_date": "2024-11-22",
@@ -388,8 +117,8 @@ Authorization: Bearer your_token_here
     ],
     "treatment_intensity_data": [
         {
-            "treatment_date": "2024-11-21", // str 형
-            "last_intensity": 5.0  // float 형
+            "treatment_date": "2024-11-21", // str
+            "last_intensity": 5.0  // float
         },
         {
             "treatment_date": "2024-11-22",
@@ -418,8 +147,8 @@ Authorization: Bearer your_token_here
     ],
     "movement_data": [
         {
-            "treatment_date": "2024-11-21", // str 형
-            "movement": 80  // int 형
+            "treatment_date": "2024-11-21", // str
+            "movement": 80  // int
         },
         {
             "treatment_date": "2024-11-22",
@@ -446,14 +175,14 @@ Authorization: Bearer your_token_here
             "movement": 30
         }
     ],
-    "avg_treatment_time": 27771.4,  // float 형
-    "avg_treatment_intensity": 4.9,  // float 형
-    "avg_movement": 51.4  // float 형
+    "avg_treatment_time": 27771.4,  // float
+    "avg_treatment_intensity": 4.9,  // float
+    "avg_movement": 51.4  // float
 }
 ```
 
 @tab <span class="ok-tab">200 OK (no-data)</span>
-해당 기간에 데이터가 없을 경우 빈값으로 옵니다.
+If there is no data available for the selected period, the response will be empty as shown below.
 ```json
 {
     "treatment_time_data": [],
@@ -467,14 +196,14 @@ Authorization: Bearer your_token_here
 
 @tab <span class="error-tab">ERROR</span>
 
-**오류 응답**
+**Error Responses**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+The API returns error codes and messages based on the HTTP status code. Refer to the table below for details.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 400              | Invalid mode. Use 0 for recent 7 days or 1 for recent 30 days     | select_mode 값을 확인해 주세요.|
-| 401              | Not authorized user     | real_user_id 값을 확인해 주세요.|
+| 400              | Invalid mode. Use 0 for recent 7 days or 1 for recent 30 days     | Check the select_mode value.|
+| 401              | Not authorized user     | Verify the real_user_id value.|
 
 ```json
 {
@@ -483,11 +212,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **통합 차트 데이터 조회**
+### **Get Integrated Chart Data**
 
-분석 탭에서 사용 통계 차트와 수면환경 차트를 그리기 위해 불러오는 API입니다.
-보내준 날짜를 기준으로 최근 7일전 혹은 최근 30일전의 데이터를 보내줍니다.
-
+This is the API used to fetch usage trend charts and sleep environment charts from the analysis tab. 
+It returns data for either the past 7 days or the past 30 days based on the provided date.
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
@@ -504,52 +232,49 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `select_mode` <Badge type="info" text="optional" />| integer    | 조회할 데이터의 기간 단위 선택 (기본값 0)|
-| `current_date` <Badge type="info" text="optional" />| string    | 조회할 데이터 기준 날짜 (YYYY-MM-DD) (기본값 서버기준 오늘날짜) |
-| `basestation_id` <Badge type="info" text="optional" />| integer    | 베이스 스테이션 id |
+| `real_user_id` <Badge type="danger" text="required" />| integer    | Child account ID|
+| `select_mode` <Badge type="info" text="optional" />| integer    | Unit of time for data retrieval (default is 0)|
+| `current_date` <Badge type="info" text="optional" />| string    | Date for data retrieval (YYYY-MM-DD) (default is today's date based on server) |
+| `basestation_id` <Badge type="info" text="optional" />| integer    | Base station ID |
 
-::: tip 파라미터 값 설명
+::: tip Parameter Value Explanation
 
-`select_mode`는 다음과 같은 값을 지원합니다:
+`select_mode` supports the following values:
 
-| select_mode | 설명 | 
+| select_mode | Description | 
 |----|------|
-| 0  | 주 단위 조회	 | 
-| 1  | 월 단위 조회 |
+| 0  | Weekly data retrieval	 | 
+| 1  | Monthly data retrieval |
 
-`current_date`는 값이 Optional 이지만 기본값은 서버기준(미국 동부)으로 오늘 날짜를 사용하므로
-앱 사용자의 위치에 따라서 시차로 인해 오차가 생길 수도 있습니다. 그래서 필수로 보내주시면 좋습니다!
+`current_date`is optional, but the default value is today's date based on the server (Eastern Time), so there might be discrepancies depending on the user's location. It’s recommended to provide this value.
 
-`basestation_id`는 수면환경 차트를 불러오기위해 필요합니다. 사용자가 베이스 스테이션에 연결한 상태여야
-조회가 가능합니다. 만약 연결된 베이스 스테이션이 없는 경우에는 제외해도 무방합니다.
+`basestation_id` is required to fetch the sleep environment chart. The user must be connected to a base station for data retrieval. If no base station is connected, it can be omitted.
 
 :::
 
-**요청 예시**
-1. **최근 7일 차트 데이터 불러오기**
+**Request Examples**
+1. **Fetch data for the past 7 days**
 ```http
 GET /api/v1/addnox/chart/analysis?real_user_id=1?basestation_id=1?current_date=2025-01-15 HTTPS
 Authorization: Bearer your_token_here
 ```
-**설명**: 최근 7일의 데이터를 조회합니다.
+**설명**: Retrieves data for the past 7 days.
 
-2. **최근 30일 차트 데이터 불러오기**
+2. **Fetch data for the past 30 days**
 ```http
 GET /api/v1/addnox/chart/analysis?real_user_id=1?basestation_id=1?current_date=2025-01-15?select_mode=1 HTTPS
 Authorization: Bearer your_token_here
 ```
-**설명**: 최근 30일의 데이터를 조회합니다.
+**설명**: Retrieves data for the past 30 days.
 
-**응답 예시**
+**Response Examples**
 ::: tabs
 
-@tab <span class="ok-tab">200 OK (주, 월 단위 조회)</span>
-- 주, 월 단위 조회 (select_mode = 0 or 1) 일 경우 일 별로 데이터를 집계.
-- 조회한 날짜에 데이터가 없을 경우 0 또는 0.0으로 보내줍니다.
+@tab <span class="ok-tab">200 OK (Weekly, Monthly Data Retrieval)</span>
+- When `select_mode` = 0 or 1, data is aggregated by day.
+- If there is no data for the selected date, it returns 0 or 0.0.
 
-동일한 날짜에 치료기록이 여러개일 경우 사용 시간과 움직임은 **합계**, 마지막 사용 강도는 **평균**(소수점 1자리)으로 계산합니다.
-`avg_`로 시작하는 값은 **Float형** 타입이며 기본값은 **0.0**입니다.
+If there are multiple treatment records for the same date, usage time and movement are **summed**, and the last intensity is **averaged** (rounded to one decimal place). Values starting with avg_ are of type **float**, with a default value of **0.0**.
 
 ```json
 {
@@ -629,8 +354,7 @@ Authorization: Bearer your_token_here
 ```
 
 @tab <span class="ok-tab">200 OK (no-data)</span>
-해당 기간에 데이터가 없을 경우 조회한 날짜와 0 또는 0.0으로 반환합니다.
-`current_date`를 **2025-01-23** 으로 `select_mode`가 **0** 일 경우 응답 예시.
+If there is no data for the selected period, it returns 0 or 0.0 for the retrieved dates.
 ```json
 {
     "treatment_time_data": [
@@ -710,16 +434,16 @@ Authorization: Bearer your_token_here
 
 @tab <span class="error-tab">ERROR</span>
 
-**오류 응답**
+**Error Responses**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+The API provides status codes and messages based on the HTTP status code. Please refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 400              | Invalid mode. Use 0 for recent 7 days or 1 for recent 30 days     | select_mode 값을 확인해 주세요.|
-| 401              | Not authorized user     | real_user_id 값을 확인해 주세요.|
-| 403              | Device not found     | basestation_id 값을 확인해 주세요.|
-| 404              | This device does not belong to the user     | 해당 유저에 연결된 basestation이 아닙니다.|
+| 400              | Invalid mode. Use 0 for recent 7 days or 1 for recent 30 days     | Check the `select_mode` value.|
+| 401              | Not authorized user     | Check the `real_user_id` value.|
+| 403              | Device not found     | Check the `basestation_id` value.|
+| 404              | This device does not belong to the user     | The basestation is not connected to the user.|
 
 
 ```json
@@ -729,13 +453,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
+### **Event History Retrieval**
 
-### **기록 데이터 조회**
-
-분석 탭에서 캘린더 기록을 불러오는 API입니다. 파라미터의 기본값은 0으로 서버 기준 당일 날짜로 조회합니다.
-Figma 기획상 캘린더는 주 단위와 월 단위, 두 가지 기간만 존재하고 있습니다. (요청 예시 참고)
-
-다만 추후 기획이 변경될 수 있기에 기간을 커스텀할 수 있습니다.
+This API is used to fetch calendar records from the Analysis tab. By default, it retrieves data based on the server's current date.
+In the current Figma design, the calendar supports weekly and monthly views. However, custom date ranges can be used to accommodate future design changes.
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
@@ -752,46 +473,46 @@ Figma 기획상 캘린더는 주 단위와 월 단위, 두 가지 기간만 존�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
-| `select_mode` <Badge type="info" text="optional" />| integer    | 조회할 데이터의 기간 단위 선택 (기본값 0)|
-| `year` <Badge type="info" text="optional" />| integer    | 조회할 연도 선택 (기본값 0) |
-| `select_data` <Badge type="info" text="optional" />| integer    | 선택한 기간에 따라 특정 값 지정 (기본값 0)|
+| `real_user_id` <Badge type="danger" text="required" />| integer    | Child account ID|
+| `select_mode` <Badge type="info" text="optional" />| integer    | Time period selection (Default: 0)|
+| `year` <Badge type="info" text="optional" />| integer    | Year selection (Default: 0) |
+| `select_data` <Badge type="info" text="optional" />| integer    | Specify data for the selected period (Default: 0)|
 
 
-**요청 예시**
-1. **이번 주 기록 데이터 불러오기**
+**Request Examples**
+1. **Fetch Records for This Week**
 ```http
 GET /api/v1/addnox/event/history?real_user_id=1 HTTPS
 Authorization: Bearer your_token_here
 ```
-**설명**: 이번 주의 데이터를 조회합니다.
+**Description**: Retrieves data for the current week.
 
-2. **이번 달 기록 데이터 불러오기**
+2. **Fetch Records for This Month**
 ```http
 GET /api/v1/addnox/event/history?real_user_id=1&select_mode=1 HTTPS
 Authorization: Bearer your_token_here
 ```
-**설명**: 이번 달의 데이터를 조회합니다.
+**Description**: Retrieves data for the current month.
 
-3. **커스텀 기간의 기록 데이터 불러오기**
+3. **Fetch Custom Date Range Records**
 ```http
-/api/v1/addnox/event/history?real_user_id=1&select_mode=0&select_data=15 // 15번째 주의 데이터를 조회합니다.
-/api/v1/addnox/event/history?real_user_id=1&select_mode=1&select_data=5 // 5월 데이터를 조회합니다.
-/api/v1/addnox/event/history?real_user_id=1&select_mode=2&select_data=0 // 오늘 기준 분기를 조회합니다.
-/api/v1/addnox/event/history?real_user_id=1&select_mode=3 // 오늘 연도의 데이터를 조회합니다.
+/api/v1/addnox/event/history?real_user_id=1&select_mode=0&select_data=15 //  Retrieves data for the 15th week.
+/api/v1/addnox/event/history?real_user_id=1&select_mode=1&select_data=5 // Retrieves data for May.
+/api/v1/addnox/event/history?real_user_id=1&select_mode=2&select_data=0 // Retrieves data for the current quarter.
+/api/v1/addnox/event/history?real_user_id=1&select_mode=3 // Retrieves data for the current year.
 ```
-**설명**: 원하는 기간의 데이터를 조회합니다.
+**Description**: Retrieves records for the specified period.
 
 
-**응답 예시**
+**Response Examples**
 
 ::: tabs
 
 @tab <span class="ok-tab">200 OK</span>
 
-치료기록 또는 이벤트가 있는 날짜만 가져옵니다.
-- **is_devlog** : 치료기록
-- **is_event**: 이벤트
+Only dates with treatment or event records are returned.
+- **is_devlog** : Treatment record
+- **is_event**: Event record
 
 ```json
 [
@@ -814,17 +535,17 @@ Authorization: Bearer your_token_here
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Responses**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+The API returns error codes and messages based on the HTTP status code. Refer to the table below for details.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 400              | Invalid mode     | select_mode 값을 확인해 주세요.|
-| 422              | select_data for mode 0 (week) must be between 0 and 54     | select_data 값을 확인해 주세요.|
-| 422              | select_data for mode 1 (month) must be between 0 and 12     | select_data 값을 확인해 주세요.|
-| 422              | select_data for mode 2 (quarter) must be between 0 and 4     | select_data 값을 확인해 주세요.|
-| 422              | The year must be between 1 and 9999     | year 값을 확인해 주세요.|
+| 400              | Invalid mode     | Check the select_mode value.|
+| 422              | select_data for mode 0 (week) must be between 0 and 54     | Check the select_data value.|
+| 422              | select_data for mode 1 (month) must be between 0 and 12     | Check the select_data value.|
+| 422              | select_data for mode 2 (quarter) must be between 0 and 4     | Check the select_data value.|
+| 422              | The year must be between 1 and 9999     | Check the year value.|
 
 ```json
 {
@@ -833,7 +554,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **기록 데이터 상세 조회**
+### **Event Details Retrieval**
 
 캘린더 기록에서 특정 날짜의 상세 데이터를 불러오는 API입니다. 파라미터의 기본값은 0으로 서버 기준 당일 날짜로 조회합니다.
 

@@ -507,7 +507,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
 | `select_mode` <Badge type="info" text="optional" />| integer    | 조회할 데이터의 기간 단위 선택 (기본값 0)|
 | `current_date` <Badge type="info" text="optional" />| string    | 조회할 데이터 기준 날짜 (YYYY-MM-DD) (기본값 서버기준 오늘날짜) |
-| `basestation_id` <Badge type="info" text="optional" />| integer    | 베이스 스테이션 id |
 
 ::: tip 파라미터 값 설명
 
@@ -521,22 +520,19 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 `current_date`는 값이 Optional 이지만 기본값은 서버기준(미국 동부)으로 오늘 날짜를 사용하므로
 앱 사용자의 위치에 따라서 시차로 인해 오차가 생길 수도 있습니다. 그래서 필수로 보내주시면 좋습니다!
 
-`basestation_id`는 수면환경 차트를 불러오기위해 필요합니다. 사용자가 베이스 스테이션에 연결한 상태여야
-조회가 가능합니다. 만약 연결된 베이스 스테이션이 없는 경우에는 제외해도 무방합니다.
-
 :::
 
 **요청 예시**
 1. **최근 7일 차트 데이터 불러오기**
 ```http
-GET /api/v1/addnox/chart/analysis?real_user_id=1?basestation_id=1?current_date=2025-01-15 HTTPS
+GET /api/v1/addnox/chart/analysis?real_user_id=1?current_date=2025-01-15 HTTPS
 Authorization: Bearer your_token_here
 ```
 **설명**: 최근 7일의 데이터를 조회합니다.
 
 2. **최근 30일 차트 데이터 불러오기**
 ```http
-GET /api/v1/addnox/chart/analysis?real_user_id=1?basestation_id=1?current_date=2025-01-15?select_mode=1 HTTPS
+GET /api/v1/addnox/chart/analysis?real_user_id=1?current_date=2025-01-15?select_mode=1 HTTPS
 Authorization: Bearer your_token_here
 ```
 **설명**: 최근 30일의 데이터를 조회합니다.
@@ -547,6 +543,7 @@ Authorization: Bearer your_token_here
 @tab <span class="ok-tab">200 OK (주, 월 단위 조회)</span>
 - 주, 월 단위 조회 (select_mode = 0 or 1) 일 경우 일 별로 데이터를 집계.
 - 조회한 날짜에 데이터가 없을 경우 0 또는 0.0으로 보내줍니다.
+- 베이스 스테이션은 서버에서 자동으로 선택합니다. 연결된 베이스 스테이션 중 가장 첫번째 기기로 가져옵니다.
 
 동일한 날짜에 치료기록이 여러개일 경우 사용 시간과 움직임은 **합계**, 마지막 사용 강도는 **평균**(소수점 1자리)으로 계산합니다.
 `avg_`로 시작하는 값은 **Float형** 타입이며 기본값은 **0.0**입니다.

@@ -235,7 +235,6 @@ It returns data for either the past 7 days or the past 30 days based on the prov
 | `real_user_id` <Badge type="danger" text="required" />| integer    | Child account ID|
 | `select_mode` <Badge type="info" text="optional" />| integer    | Unit of time for data retrieval (default is 0)|
 | `current_date` <Badge type="info" text="optional" />| string    | Date for data retrieval (YYYY-MM-DD) (default is today's date based on server) |
-| `basestation_id` <Badge type="info" text="optional" />| integer    | Base station ID |
 
 ::: tip Parameter Value Explanation
 
@@ -248,21 +247,19 @@ It returns data for either the past 7 days or the past 30 days based on the prov
 
 `current_date`is optional, but the default value is today's date based on the server (Eastern Time), so there might be discrepancies depending on the user's location. It’s recommended to provide this value.
 
-`basestation_id` is required to fetch the sleep environment chart. The user must be connected to a base station for data retrieval. If no base station is connected, it can be omitted.
-
 :::
 
 **Request Examples**
 1. **Fetch data for the past 7 days**
 ```http
-GET /api/v1/addnox/chart/analysis?real_user_id=1?basestation_id=1?current_date=2025-01-15 HTTPS
+GET /api/v1/addnox/chart/analysis?real_user_id=1?current_date=2025-01-15 HTTPS
 Authorization: Bearer your_token_here
 ```
 **설명**: Retrieves data for the past 7 days.
 
 2. **Fetch data for the past 30 days**
 ```http
-GET /api/v1/addnox/chart/analysis?real_user_id=1?basestation_id=1?current_date=2025-01-15?select_mode=1 HTTPS
+GET /api/v1/addnox/chart/analysis?real_user_id=1?current_date=2025-01-15?select_mode=1 HTTPS
 Authorization: Bearer your_token_here
 ```
 **설명**: Retrieves data for the past 30 days.
@@ -273,6 +270,7 @@ Authorization: Bearer your_token_here
 @tab <span class="ok-tab">200 OK (Weekly, Monthly Data Retrieval)</span>
 - When `select_mode` = 0 or 1, data is aggregated by day.
 - If there is no data for the selected date, it returns 0 or 0.0.
+- Basestation is selected automatically by server-side.
 
 If there are multiple treatment records for the same date, usage time and movement are **summed**, and the last intensity is **averaged** (rounded to one decimal place). Values starting with avg_ are of type **float**, with a default value of **0.0**.
 

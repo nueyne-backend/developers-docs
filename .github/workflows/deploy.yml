@@ -38,7 +38,7 @@ jobs:
 
       # run build script
       - name: Build VuePress site
-        run: pnpm docs:build
+        run: pnpm docs:build --clean-cache
 
       # please check out the docs of the workflow for more details
       # @see https://github.com/crazy-max/ghaction-github-pages
@@ -49,6 +49,7 @@ jobs:
           target_branch: gh-pages
           # deploy the default output dir of VuePress
           build_dir: docs/.vuepress/dist
+          keep_history: false
         env:
           # @see https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

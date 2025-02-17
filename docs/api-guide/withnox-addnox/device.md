@@ -489,7 +489,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | 3  | App Shutdown (치료 도중 앱에서 기기 종료 명령을 눌러 기기를 종료한 경우) |
 | 4  | Faulty Contacts Shutdown (전극이 피부에 제대로 접촉되지 않아 기기가 종료된 경우) |
 | 5  | VBUS Shutdown (치료 도중 기기를 충전하여 치료가 종료된 경우) |
-| 6  | Unknown Shutdown (알 수 없는 이유로 종료된 경우) |
+| 6  | Factory Shutdown (공장 테스트로 종료된 경우) |
 
 :::
 
@@ -643,6 +643,211 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 }
 ```
 :::
+
+### **기기 사용 기록 업로드 (V2)**
+새로운 요구사항에 맞춰 통일된 API를 사용합니다. 다음과 같은 기능을 가집니다.
+- 기기의 사용을 시작하고 30초 뒤에 호출하여 임시 사용 기록을 만듭니다.
+- 기기 사용중 블루투스 연결이 끊어졌을때 호출하여 임시 사용 기록을 업데이트 합니다.
+- 기기 사용이 종료되었을때 호출하여 임시 사용 기록을 완성 기록으로 업데이트 합니다.
+- 기기에서 보낼 사용 기록이 있을때 호출하여 사용 기록을 저장합니다.
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v2/addnox/device/devlog
+</div>
+
+**Headers**
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Body Parameters**
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `log_arrays` <Badge type="danger" text="required" />| array    | 로그 기록 컨테이너|
+| ├ `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
+| ├ `device_id` <Badge type="danger" text="required" />| integer    | 기기의 id |
+| ├ `unique_id` <Badge type="danger" text="required" />| string    | 기기의 unique_id (uuid) |
+| ├ `detail_data` <Badge type="danger" text="required" />| json    | 기기 사용기록 |
+| ├ `log_file_id` <Badge type="info" text="optional" />| integer    | 기기 사용기록 id (shortlog file_id 를 말한다)|
+
+<details>
+<summary><strong>📌 detail_data 구조 보기</strong></summary>
+
+`detail_data`는 다음과 같은 필드를 포함합니다:
+
+| Name | Type  | Description |
+|------|-------|-------------|
+| `treatment_date` <Badge type="danger" text="required" />| string | 기기의 사용 시작 시간 (ISO 8601 형식) |
+| `finish_flag` <Badge type="info" text="optional" />| integer | 기기 사용 종료 유형, 자세한 구조는 아래 참조|
+| `last_intensity`   <Badge type="danger" text="required" />| integer | 마지막 사용 강도 |
+| `treatment_time`   <Badge type="danger" text="required" />| integer | 사용 시간 (초 단위) |
+
+::: tip finish_flag 값 설명
+
+`finish_flag`는 다음과 같은 종료 상태를 나타냅니다:
+
+| 값 | 의미 |
+|----|------|
+| 1  | Normal Shutdown (정상적으로 치료를 끝낸 경우) |
+| 2  | Button Shutdown (치료 도중 전원 버튼을 길게 눌러 기기를 종료한 경우) |
+| 3  | App Shutdown (치료 도중 앱에서 기기 종료 명령을 눌러 기기를 종료한 경우) |
+| 4  | Faulty Contacts Shutdown (전극이 피부에 제대로 접촉되지 않아 기기가 종료된 경우) |
+| 5  | VBUS Shutdown (치료 도중 기기를 충전하여 치료가 종료된 경우) |
+| 6  | Factory Shutdown (공장 테스트로 종료된 경우) |
+
+:::
+
+</details>
+
+**요청 예시**
+
+**1. 임시 사용 기록 업로드**
+
+finish_flag를 null로 보내주면 임시 사용기록을 만듭니다.
+```http
+POST /api/v2/addnox/device/devlog HTTPS
+Authorization: Bearer your_token_here
+{
+    "log_arrays": [
+        {
+            "real_user_id": 1,
+            "device_id": 2,
+            "unique_id": "withnox_temp",
+            "detail_data": {
+                "treatment_date": "2025-02-21T15:48:49",
+                "finish_flag": null,  
+                "last_intensity": 2,
+                "treatment_time": 255555
+            }
+        }
+    ]
+}
+```
+
+**2. 임시 사용 기록 업데이트**
+
+서버에 임시 사용 기록이 있을 경우 해당 임시 기록을 보내준 데이터로 업데이트합니다.
+```http
+POST /api/v2/addnox/device/devlog HTTPS
+Authorization: Bearer your_token_here
+{
+    "log_arrays": [
+        {
+            "real_user_id": 1,
+            "device_id": 2,
+            "unique_id": "withnox_temp",
+            "detail_data": {
+                "treatment_date": "2025-02-21T15:48:49",
+                "finish_flag": null,
+                "last_intensity": 2,
+                "treatment_time": 255555
+            }
+        }
+    ]
+}
+```
+**3. 임시 사용 기록 완성**
+
+finish_flag와 log_file_id를 보내주면 임시 사용 기록을 완성 시킵니다.
+```http
+POST /api/v2/addnox/device/devlog HTTPS
+Authorization: Bearer your_token_here
+{
+    "log_arrays": [
+        {
+            "real_user_id": 1,
+            "device_id": 2,
+            "unique_id": "withnox_temp",
+            "detail_data": {
+                "treatment_date": "2025-02-14T15:48:49",
+                "finish_flag": 2,
+                "last_intensity": 25,
+                "treatment_time": 500000
+            },
+            "log_file_id": 1
+        }
+    ]
+}
+```
+**4. 사용 기록 업로드**
+
+다수의 기록들을 업로드할 수 있습니다.
+* 서버에 임시 사용 기록이 남아있다면 제일 처음으로 보내주는 배열 첫번째 기록을 임시 사용기록에 덮어 씌웁니다.
+```http
+POST /api/v2/addnox/device/devlog HTTPS
+Authorization: Bearer your_token_here
+{
+    "log_arrays": [
+        {
+            "real_user_id": 1,
+            "device_id": 2,
+            "unique_id": "withnox_temp",
+            "detail_data": {
+                "treatment_date": "2025-02-14T15:48:49",
+                "finish_flag": 2,
+                "last_intensity": 25,
+                "treatment_time": 500000
+            },
+            "log_file_id": 1
+        },
+                {
+            "real_user_id": 1,
+            "device_id": 2,
+            "unique_id": "withnox_temp",
+            "detail_data": {
+                "treatment_date": "2025-02-15T15:48:49",
+                "finish_flag": 2,
+                "last_intensity": 25,
+                "treatment_time": 500000
+            },
+            "log_file_id": 2
+        },
+        // 등등
+    ]
+}
+```
+
+**응답 예시**
+::: tabs
+@tab <span class="ok-tab">200 OK (임시 사용 기록)</span>
+임시 사용기록을 만들거나 업데이트할 경우 아래와 같이 응답합니다.
+
+```json
+{
+    "statusCode": 200,
+    "message": "Temp devlog saved successfully"
+}
+```
+
+@tab <span class="ok-tab">200 OK (사용 기록 업로드)</span>
+임시 사용 기록을 완성시키거나 완성 기록들을 업로드 할 경우 아래와 같이 응답합니다.
+
+```json
+{
+    "statusCode": 200,
+    "message": "Devlog saved successfully"
+}
+```
+
+@tab <span class="error-tab">ERROR</span>
+**오류 응답**
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 401              | Not authorized user     | 유저 권한이 없습니다.|
+| 404              | Not Found Device  | 기기가 존재하지 않습니다.     |
+| 404              | Not Found User  | 자식 계정이 존재하지 않습니다.     |
+| 409              | Not Connected Device  | 등록되어있는 기기가 아닙니다.     |
+| 409              | Update Device Log Failed or Create Device Log Failed | 서버 에러     |
+
+```json
+{
+    "detail": "Not Found Device"
+}
+```
+:::
+
 
 ## **공통 에러 처리**
 

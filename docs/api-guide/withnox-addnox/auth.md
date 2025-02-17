@@ -620,8 +620,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 403              | User is not valid, please sign up    |  소셜 회원가입이 필요한 유저입니다.|
 | 400              | User is signed up with email type   |  이메일 방식으로 회원가입한 유저입니다.|
+| 401              | User is Deleted    |  회원탈퇴한 계정입니다.|
+| 403              | User is not valid, please sign up    |  소셜 회원가입이 필요한 유저입니다.|
 | 404              | User is signed up with {social_type} type   |  다른 social provider로 회원가입한 유저입니다.|
 | 409              | Invalid {provider} access token   |  유효하지 않은 토큰입니다.|
 

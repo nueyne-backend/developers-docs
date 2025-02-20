@@ -704,7 +704,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 **1. 임시 사용 기록 업로드**
 
-finish_flag를 null로 보내주면 임시 사용기록을 만듭니다.
+finish_flag를 null로 보내주면 임시 사용기록을 만듭니다. log_file_id 필드는 아예 안보내도 괜찮습니다.
+treatment_date 또한 앱에서 30초후에 현재 시간을 형식에 맞게 보내주면 서버에서 30초를 빼서 저장합니다.
+
 ```http
 POST /api/v2/addnox/device/devlog HTTPS
 Authorization: Bearer your_token_here

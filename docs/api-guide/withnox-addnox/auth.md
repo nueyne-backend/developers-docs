@@ -186,6 +186,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | 403              | SMS verification required     |  SMS 인증이 완료되지 않았습니다.|
 | 404              | User not found     |  해당 유저를 찾을 수 없습니다.|
 | 410              | User is Deleted     |  회원탈퇴한 계정입니다.|
+| 423              | Access denied. Account blocked |  차단된 계정입니다.|
 
 ```json
 {
@@ -581,8 +582,8 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `id_token` <Badge type="info" text="optional" />| string    | provider가 google, apple, naver, kakao 인 경우에는 필수값|
-| `access_token` <Badge type="info" text="optional" />| string    | provider가 facebook 인 경우에는 필수값|
+| `id_token` <Badge type="info" text="optional" />| string    | provider가 apple,google,kakao 인 경우에는 필수값|
+| `access_token` <Badge type="info" text="optional" />| string    | provider가 facebook, naver 인 경우에는 필수값|
 
 **요청 예시**
 ```http
@@ -625,6 +626,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | 403              | User is not valid, please sign up    |  소셜 회원가입이 필요한 유저입니다.|
 | 404              | User is signed up with {social_type} type   |  다른 social provider로 회원가입한 유저입니다.|
 | 409              | Invalid {provider} access token   |  유효하지 않은 토큰입니다.|
+| 423              | Access denied. Account blocked |  차단된 계정입니다.|
 
 ```json
 {

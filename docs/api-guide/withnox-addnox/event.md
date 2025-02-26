@@ -1010,8 +1010,8 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ### **이벤트 데이터 생성 & 업데이트**
 
 상세 기록에서 특정 날짜에 이벤트를 생성 또는 업데이트 하는 API입니다.
+`created_at`을 기준으로 해당 날짜에 이벤트를 생성하거나, 해당 날짜에 이벤트가 있을경우 덮어씌웁니다.
 
-**Body Parameter에 event_id를 포함하면 업데이트로 간주합니다.**
 <div class="api-endpoint">
   <span class="api-method">POST</span>
   /api/v1/addnox/event
@@ -1027,11 +1027,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `event_id` <Badge type="info" text="optional" />| integer    | 업데이트할 이벤트의 id|
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
 | `memo` <Badge type="info" text="optional" />| string    | 메모 (최대 1000자)|
 | `event_data` <Badge type="info" text="optional" />| json    | 이벤트 데이터 (아래 형식 참고)|
-| `created_at` <Badge type="danger" text="required" />| string    | 생성 또는 업데이트할 이벤트의 날짜|
+| `created_at` <Badge type="danger" text="required" />| string    | 생성 또는 업데이트할 이벤트의 날짜(yyyy-mm-dd)|
 
 ::: tip event_data 값 설명
 
@@ -1073,15 +1072,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 **요청 예시**
 1. **이벤트 생성하기**
 ```http
-GET /api/v1/addnox/event?real_user_id=1 HTTPS
+POST /api/v1/addnox/event HTTPS
 Authorization: Bearer your_token_here
 {
   "real_user_id": "7",
-  "memo": "안녕하세요.",
   "event_data": {
     "hospital": [
-      "Nu Eyne",
-      "건국대병원",
+      "건국대병원",  
       "중앙대병원"
     ],
     "medication": [
@@ -1097,25 +1094,37 @@ Authorization: Bearer your_token_here
 
 2. **이벤트 업데이트하기**
 ```http
-GET /api/v1/addnox/event?real_user_id=1 HTTPS
+POST /api/v1/addnox/event HTTPS
 Authorization: Bearer your_token_here
 {
-  "event_id": 9,
   "real_user_id": "7",
-  "memo": "수정했습니다",
   "event_data": {
     "hospital": [
-      "건국대병원",
-      "중앙대병원"
+      "건국대병원",   // 기존 데이터
+      "중앙대병원",  // 기존 데이터
+      "연세대병원"   // 새로 추가된 병원
     ],
     "medication": [
       {
-        "medication_name": "medication_1",
-        "medication_dose": 7
+        "medication_name": "medication_1", // 기존 데이터
+        "medication_dose": 7   // 추가된 값
       }
     ]
   },
-  "created_at": "2024-12-09"
+  "created_at": "2024-12-09"  // 업데이트할 이벤트와 동일한 날짜
+}
+```
+3. **이벤트 삭제하기**
+```http
+POST /api/v1/addnox/event HTTPS
+Authorization: Bearer your_token_here
+{
+  "real_user_id": "7",
+  "event_data": {
+    "hospital": [],
+    "medication": []
+  },
+  "created_at": "2024-12-09"  // 업데이트할 이벤트와 동일한 날짜
 }
 ```
 
@@ -1123,7 +1132,7 @@ Authorization: Bearer your_token_here
 
 @tab <span class="ok-tab">200 OK </span>
 
-생성 & 업데이트된 이벤트를 반환합니다.
+생성 & 업데이트된 최종 상태를 반환합니다.
 
 ```json
 {
@@ -1159,13 +1168,12 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | 400              | Failed to store user event     | 서버 에러.|
 | 401              | Not authorized user     | 유저 권한이 없습니다.|
-| 404              | Event not found    | event_id를 찾을 수 없습니다.|
 | 404              | Real User id is not valid    | real_user_id를 확인해주세요.|
 
 
 ```json
 {
-  "detail":  "Event not found"
+  "detail":  "Real User id is not valid"
 }
 ```
 :::

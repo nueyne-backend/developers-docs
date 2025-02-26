@@ -536,7 +536,8 @@ Content-Type: application/json
 
 ```json
 {
-  "email": "your@email.com"
+  "email": "your@email.com",
+  "provider": "naver"
 }
 ```
 

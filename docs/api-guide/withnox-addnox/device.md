@@ -850,6 +850,58 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
+### **기기 임피던스 에러 알림톡 보내기**
+
+기기에서 임피던스 에러가 발생하였을때 알림톡을 보내는 API입니다.
+
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/addnox/device/alimtalk
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+
+**요청 예시**
+```http
+POST /api/v1/addnox/device/alimtalk HTTPS
+Authorization: Bearer your_token_here
+```
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+알림톡 전송이 성공하였으면 200 ok 외엔 아무것도 리턴하지 않습니다.
+
+```json
+null
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 403              | Phone number is not found     | 유저의 전화번호를 찾을 수 없습니다.|
+| 409              | Alimtalk send failed  | 알림톡 전송 실패 (서버 문의)     |
+| 500              | Internal Server Error  | 서버 문의     |
+
+```json
+{
+    "detail": "Alimtalk send failed"
+}
+```
+:::
+
 
 ## **공통 에러 처리**
 

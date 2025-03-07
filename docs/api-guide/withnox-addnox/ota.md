@@ -262,3 +262,34 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 }
 ```
 :::
+
+## **공통 에러 처리**
+
+모든 엔드포인트에서 공통적으로 응답하는 에러코드입니다.
+
+**Error Response Example**
+
+- `401 Unauthorized`: 토큰이 잘못되었습니다.
+  ```json
+  {
+    "detail": "Could not validate credentials" // 토큰이 잘못되었습니다.
+  }
+  ```
+- `401 Unauthorized`: 토큰이 만료되었습니다.
+  ```json
+  {
+    "detail": "Token is expired" // 토큰이 만료되었습니다.
+  }
+  ```
+- `404 Not Found`: 리소스를 찾을 수 없습니다. URI를 다시 확인해주세요.
+  ```json
+  {
+    "detail": "Resource not found"
+  }
+  ```
+- `500 Internal Server Error`: 서버 에러입니다.
+  ```json
+  {
+    "detail": "Internal server error. Please try again later."
+  }
+  ```

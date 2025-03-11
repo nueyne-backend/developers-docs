@@ -59,7 +59,10 @@ Authorization: Bearer your_token_here
     "register_type": "E",
     "national_code": "KR",
     "need_personal_info_update": false,
-    "need_to_pwd_change": true
+    "need_to_pwd_change": true,
+    "is_device_muted": true,
+    "is_device_alim_talk_enabled": true,
+    "is_basestation_alert_enabled": true
 }
 ```
 @tab <span class="error-tab">ERROR</span>
@@ -588,6 +591,74 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```json
 {
     "detail": "User is None"
+}
+```
+:::
+
+### **유저 알림 정보 업데이트**
+
+유저의 알림 정보를 업데이트합니다. 모든 알림의 default 값은 false입니다.
+
+<div class="api-endpoint">
+  <span class="api-method">PATCH</span>
+  /api/v1/addnox/user/notification
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `is_device_muted` <Badge type="danger" text="required" />| boolean    | 위드녹스 디바이스 음소거 모드 활성화 |
+| `is_device_alim_talk_enabled` <Badge type="danger" text="required" />| boolean  | 위드녹스 디바이스 전극 접촉 카카오톡 알림 활성화     |
+| `is_basestation_alert_enabled` <Badge type="danger" text="required" />| boolean  | 베이스 스테이션 센서 알림 활성화     |
+
+
+
+**요청 예시**
+```http
+PATCH https://app.nueyne.dev/api/v1/addnox/user/notification HTTPS
+Authorization: Bearer your_token_here
+Content-Type: application/json
+{
+    "is_device_muted": 1,
+    "is_device_alim_talk_enabled": 1,
+    "is_basestation_alert_enabled": 1
+}
+```
+
+**응답 예시**
+
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+    "is_device_muted": 1,
+    "is_device_alim_talk_enabled": 1,
+    "is_basestation_alert_enabled": 1
+}
+```
+@tab <span class="error-tab"> ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | User not found    | 유저 정보를 찾을 수 없습니다.|
+| 409              | User notification update failed  | 유저 알림 업데이트 실패(서버 문의).     |
+
+```json
+{
+    "detail": "User not found"
 }
 ```
 :::

@@ -664,7 +664,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | `gender` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 성별입니다 <br> - M : 남성 <br> - F : 여성 <br> - N : 논바이너리 <br> - P : 알려주고 싶지 않음|
 | `phone` <Badge type="danger" text="required" />| string    | 전화번호 값이 E.164 format 이어야 합니다. <br> - ex: +14155552671|
 | `register_type` <Badge type="danger" text="required" />| string    | 회원가입 형식입니다. <br> - E : 이메일 <br> - S : 소셜|
-| `social_id` <Badge type="danger" text="required" />| string    | 소셜 provider에 맞춰 토큰을 보내주세요.  <br> - id_token : provider가 google, apple, naver, kakao 인 경우 <br> - access_token : provider가 facebook 인 경우|
+| `social_id` <Badge type="danger" text="required" />| string    | 소셜 provider에 따라 고유 Sub 값 또는 ID를 보내주세요|
 | `social_type` <Badge type="danger" text="required" />| string    | 소셜 provider 값입니다. <br> - 구글 : google <br> - 애플 : apple <br> - 페이스북(메타) : facebook <br> - 네이버 : naver <br> -  카카오 : kakao|
 | `is_push_agree` <Badge type="danger" text="required" />| boolean    | 푸시 알림 동의 여부입니다. |
 | `is_marketing_agree` <Badge type="danger" text="required" />| boolean    | 마케팅 수신 동의 여부입니다.|

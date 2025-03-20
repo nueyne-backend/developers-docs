@@ -734,6 +734,10 @@ Figma 기획상 캘린더는 주 단위와 월 단위, 두 가지 기간만 존�
 
 다만 추후 기획이 변경될 수 있기에 기간을 커스텀할 수 있습니다.
 
+치료기록을 가져오는 조건은 다음과 같습니다.
+1. 임시 데이터인 경우
+2. 완성 데이터이면서 사용 시간이 120초 이상인 경우
+
 <div class="api-endpoint">
   <span class="api-method">GET</span>
   /api/v1/addnox/event/history
@@ -833,7 +837,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ### **기록 데이터 상세 조회**
 
 캘린더 기록에서 특정 날짜의 상세 데이터를 불러오는 API입니다. 파라미터의 기본값은 0으로 서버 기준 당일 날짜로 조회합니다.
-
+치료기록을 가져오는 조건은 다음과 같습니다.
+1. 임시 데이터인 경우
+2. 완성 데이터이면서 사용 시간이 120초 이상인 경우
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
@@ -879,7 +885,7 @@ Authorization: Bearer your_token_here
 
 치료기록 또는 이벤트가 있는 날짜만 가져옵니다.
 - **event_id** : 이벤트 고유 id
-- **treatment_data**: 상세 치료 기록 (날짜, 사용시간, 마지막 사용 강도)
+- **treatment_data**: 상세 치료 기록 (치료시작시간, 사용시간, 마지막 사용 강도, 임시 기록 여부)
 - **memo**: 메모
 - **event_data**: 상세 이벤트(약, 병원)
 
@@ -891,12 +897,14 @@ Authorization: Bearer your_token_here
         {
             "treatment_date": "2024-12-03T04:00:57",
             "treatment_time": 25200,
-            "last_intensity": 25
+            "last_intensity": 25,
+            "is_temp": true
         },
         {
             "treatment_date": "2024-12-03T05:00:57",
             "treatment_time": 25200,
-            "last_intensity": 16
+            "last_intensity": 16,
+            "is_temp": true
         }
     ],
     "memo": "testtesttest",
@@ -929,7 +937,8 @@ Authorization: Bearer your_token_here
     "treatment_data": [
         {
             "treatment_date": "2024-11-21T02:00:57",
-            "treatment_time": 25200
+            "treatment_time": 25200,
+            "is_temp": true
         }
     ],
     "memo": "",

@@ -1254,6 +1254,71 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
+### **PDF 리포트 내보내기_V2**
+
+선택한 기간의 PDF report를 생성하는 API 입니다.
+
+<div class="api-endpoint">
+  <span class="api-method">GET</span>
+  /api/v1/addnox/pdf/export
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
+| `current_date` <Badge type="danger" text="required" />| integer    | 데이터 조회 시작 날짜 (YYYY-MM-DD)|
+| `select_mode` <Badge type="danger" text="required" />| string    | 기간 버튼 값(0 = 1 Month,1 = 2 Months, 2= 3 Months) |
+| `language` <Badge type="info" text="optional" />| string    | PDF report 언어 (기본값: KR)|
+
+
+**요청 예시 (최근 한달 PDF 리포트 출력)**
+```http
+GET /api/v1/addnox/pdf/report?real_user_id=7&current_date=2024-11-21&select_mode=0 HTTPS
+Authorization: Bearer your_token_here
+```
+
+
+::: tabs
+
+@tab <span class="ok-tab">200 OK </span>
+
+생성된 PDF Report 파일을 반환합니다.
+- Content-Type: application/pdf
+- content-dispostition: attachment; filename=Withnox_Report.pdf
+
+```file
+Withnox_Report.pdf
+```
+
+@tab <span class="error-tab"> ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 401              | Not authorized user     | 유저 권한이 없습니다.|
+| 404              | Real user is not found     | real_user_id를 확인해주세요.|
+| 403              | This device does not belong to the user    | 유저에게 등록된 베이스 스테이션이 아닙니다.|
+| 404              | Device not found    | basestation_id를 확인해주세요.|
+
+
+```json
+{
+  "detail":  "Not authorized user"
+}
+```
+:::
+
 
 ## **공통 에러 처리**
 

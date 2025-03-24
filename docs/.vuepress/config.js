@@ -12,12 +12,12 @@ export default defineUserConfig({
   
   locales: {
     '/': {
-      lang: '한국어',
+      lang: 'ko-KR',
       // title: 'Nu Eyne Developers Docs',
       description: 'Guides you a quick, easy, and optimal way.',
     },
     '/en/': {
-      lang: 'ENGLISH',
+      lang: 'en-US',
       // title: 'Nu Eyne Developers Docs',
       description: 'Guides you a quick, easy, and optimal way.',
     },

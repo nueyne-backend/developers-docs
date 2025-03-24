@@ -1256,7 +1256,8 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 ### **PDF 리포트 내보내기_V2**
 
-선택한 기간의 PDF report를 생성하는 API 입니다.
+선택한 기간 버튼과 시작 날짜에 따라 PDF report를 생성하는 API 입니다.
+베이스 스테이션은 유저가 연결하고 있는 가장 첫번째 베이스 스테이션을 자동으로 가져옵니다.
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>

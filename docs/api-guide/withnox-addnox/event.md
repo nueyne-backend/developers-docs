@@ -727,6 +727,103 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
+### **설문 차트 데이터 조회**
+
+설문 분석 탭에서 설문 결과에 대한 통계를 보여주기 위한 API입니다.
+DB에 저장된 설문 기록을 기준으로 **최근 5개의 데이터**를 보내줍니다.
+
+real_user_id 파라미터를 제외하고 보낼 시 로그인한 유저의 모든 설문 결과에 대한 통계를 보내줍니다.
+특정 자식 계정의 설문 통계만 확인하고 싶다면 real_user_id를 보내주세요.
+
+<div class="api-endpoint">
+  <span class="api-method">GET</span>
+  /api/v1/addnox/chart/survey/analysis
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `real_user_id` <Badge type="info" text="optional" />| integer    | 자식 계정의 id|
+
+
+
+
+**요청 예시**
+```http
+GET /api/v1/addnox/chart/survey/analysis HTTPS
+Authorization: Bearer your_token_here
+```
+
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK </span>
+
+
+```json
+{
+    "survey_analysis": [
+        {
+            "attention_score": 0,
+            "impulsivity_score": 0,
+            "disorder_score": 18,
+            "created_at": "2025-03-25T12:45:50"
+        },
+        {
+            "attention_score": 0,
+            "impulsivity_score": 0,
+            "disorder_score": 18,
+            "created_at": "2025-03-25T11:05:33"
+        },
+        {
+            "attention_score": 0,
+            "impulsivity_score": 0,
+            "disorder_score": 15,
+            "created_at": "2025-03-25T10:52:43"
+        },
+        {
+            "attention_score": 15,
+            "impulsivity_score": 18,
+            "disorder_score": 17,
+            "created_at": "2025-03-24T10:34:00"
+        },
+        {
+            "attention_score": 15,
+            "impulsivity_score": 18,
+            "disorder_score": 17,
+            "created_at": "2025-03-24T10:34:00"
+        }
+    ]
+}
+```
+
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 401              | Not authorized user     | real_user_id 값을 확인해 주세요.|
+
+
+```json
+{
+    "detail": "Not authorized user"
+}
+```
+:::
+
+
 ### **기록 데이터 조회**
 
 분석 탭에서 캘린더 기록을 불러오는 API입니다. 파라미터의 기본값은 0으로 서버 기준 당일 날짜로 조회합니다.

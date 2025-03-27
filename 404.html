@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.20" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const useChoice = localStorage.getItem('vuepress-color-scheme')
+      const systemStatus =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (useChoice === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (useChoice === 'dark' || systemStatus) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <link rel="icon" href="/developers-docs/images/favicon.ico"><title></title><meta name="description" content="Guides you a quick, easy, and optimal way.">
+    <link rel="preload" href="/developers-docs/assets/style-DJgGMNbs.css" as="style"><link rel="stylesheet" href="/developers-docs/assets/style-DJgGMNbs.css">
+    <link rel="modulepreload" href="/developers-docs/assets/app-CZVy33iF.js"><link rel="modulepreload" href="/developers-docs/assets/404.html-BNSqycMh.js">
+    <link rel="prefetch" href="/developers-docs/assets/index.html-7CvVKQdI.js" as="script"><link rel="prefetch" href="/developers-docs/assets/index.html-CW4PuQax.js" as="script"><link rel="prefetch" href="/developers-docs/assets/index.html-xxzkEZTE.js" as="script"><link rel="prefetch" href="/developers-docs/assets/index.html-DpD9BMHc.js" as="script"><link rel="prefetch" href="/developers-docs/assets/auth.html-DbpajozW.js" as="script"><link rel="prefetch" href="/developers-docs/assets/basestation.html-Dbzoqzlh.js" as="script"><link rel="prefetch" href="/developers-docs/assets/device.html-DDzw3EEd.js" as="script"><link rel="prefetch" href="/developers-docs/assets/event.html-CPSI56z0.js" as="script"><link rel="prefetch" href="/developers-docs/assets/ota.html-B3eSTz6u.js" as="script"><link rel="prefetch" href="/developers-docs/assets/survey.html-ZZYlR7Bl.js" as="script"><link rel="prefetch" href="/developers-docs/assets/user.html-BS8bsu44.js" as="script"><link rel="prefetch" href="/developers-docs/assets/index.html-CHajThBr.js" as="script"><link rel="prefetch" href="/developers-docs/assets/index.html-B3_yB9AN.js" as="script"><link rel="prefetch" href="/developers-docs/assets/auth.html-B7ZGqx0e.js" as="script"><link rel="prefetch" href="/developers-docs/assets/event.html-DtuzfJr9.js" as="script"><link rel="prefetch" href="/developers-docs/assets/user.html-jcTSUmm4.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-df5fab67><main class="page" data-v-df5fab67><div vp-content data-v-df5fab67><h1 data-v-df5fab67>404</h1><blockquote data-v-df5fab67>How did we get here?</blockquote><a class="route-link" href="/developers-docs/" data-v-df5fab67>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/developers-docs/assets/app-CZVy33iF.js" defer></script>
+  </body>
+</html>

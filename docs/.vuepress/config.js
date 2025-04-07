@@ -48,6 +48,16 @@ export default defineUserConfig({
                 '/api-guide/withnox-addnox/ota.md', // 'withnox-addnox/ota.md' 파일 참조
               ],
             },
+            {
+              text: 'Elexir Legacy',
+              collapsible: true, // 접을 수 있는 옵션 (선택 사항)
+              children: [
+                '/api-guide/elexir-legacy/', // 'withnox-addnox/README.md' 파일 참조
+                '/api-guide/elexir-legacy/auth.md', 
+                '/api-guide/elexir-legacy/user.md', 
+                '/api-guide/elexir-legacy/device.md', 
+              ],
+            },
           ],
         },
       },

@@ -121,7 +121,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 **요청 예시**
 ```http
 POST   /api/v1/legacy/auth/signup
-Authorization: Bearer valid_token_here
 Content-Type: application/json
 {
     "email": "jeongtae.kim@nueyne.com",
@@ -174,6 +173,117 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```json
 {
   "detail": "Email is not valid"
+}
+```
+:::
+
+
+### **아이디 찾기**
+
+유저가 가입했던 정보를 가지고 아이디를 찾는 API입니다.
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/legacy/auth/find-id
+</div>
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `birthdate` <Badge type="danger" text="required" />| string    | 생년월일 값입니다 (yyyy-mm-dd)|
+| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다 (xxx-xxxx-xxxx)|
+| `gender` <Badge type="danger" text="required" />| string    | 성별 <br> - M : 남성 <br> - F : 여성|
+
+**요청 예시**
+```http
+POST /api/v1/legacy/auth/find-id
+Content-Type: application/json
+{
+  "birthdate": "2000-01-01",
+  "phone": "010-1234-5678",
+  "gender": "M"
+}
+```
+
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+사용자 이메일 값을 반환합니다.
+```string
+"elexir_legacy@test.com"
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | User id not found     |  해당 유저를 찾을 수 없습니다.|
+
+
+```json
+{
+    "detail": "User id not found"
+}
+```
+:::
+
+### **비밀번호 초기화**
+
+해당 이메일과 비밀번호로 로그인하는 API입니다.
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/legacy/auth/send-reset-mail
+</div>
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `email` <Badge type="danger" text="required" />| string    | 이메일 값|
+
+**요청 예시**
+```http
+POST /api/v1/legacy/auth/send-reset-mail
+Content-Type: application/json
+{
+  "email": "string"
+}
+```
+
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+  "statusCode": 200,
+  "message": "User reset password email send successfully",
+}
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 404              | User ID not found     |  해당 유저를 찾을 수 없습니다.|
+| 500              | Email send failed |  이메일 발송 실패.|
+
+```json
+{
+    "detail": "Email send failed"
 }
 ```
 :::

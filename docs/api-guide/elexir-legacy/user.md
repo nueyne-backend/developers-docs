@@ -26,12 +26,12 @@ Authorization: Bearer your_token_here
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
-  /api/v1/legacy/user/dup_check_email/{email}
+  /api/v1/legacy/user/dup-check-email/{email}
 </div>
 
 **요청 예시**
 ```http
-GET /api/v1/legacy/user/dup_check_email/test@gmail.com HTTPS
+GET /api/v1/legacy/user/dup-check-email/test@gmail.com HTTPS
 Authorization: Bearer your_token_here
 ```
 
@@ -69,12 +69,12 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
-  /api/v1/legacy/user/dup_check_phone/{phone}
+  /api/v1/legacy/user/dup-check-phone/{phone}
 </div>
 
 **요청 예시**
 ```http
-GET /api/v1/legacy/user/dup_check_phone/010-1234-5678 HTTPS
+GET /api/v1/legacy/user/dup-check-phone/010-1234-5678 HTTPS
 Authorization: Bearer your_token_here
 ```
 

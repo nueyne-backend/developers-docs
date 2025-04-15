@@ -124,6 +124,7 @@ Authorization: Bearer your_token_here
     "project_id": 0,
     "hardware_id": 0,
     "now_firmware_id": 0,
+    "firmware_version": "1.0.0",
     "unique_id": "string",
     "serial_code": "string",
     "device_alias": "string",
@@ -176,11 +177,12 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `serial_code` <Badge type="danger" text="required" />| string    | 기기의 시리얼 코드|
 | `mac_id` <Badge type="danger" text="required" />| string    | 기기의 MAC 주소|
+| `unique_id` <Badge type="danger" text="required" />| string    | 기기의 unique_id (uuid) |
 | `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
 
 **요청 예시**
 ```http
-POST /api/v1/addnox/device/set-my-device?serial_code=test1&mac_id=test1234&real_user_id=1 HTTPS
+POST /api/v1/addnox/device/set-my-device?serial_code=test1&mac_id=test1234&unique_id=test1234&real_user_id=1 HTTPS
 Authorization: Bearer your_token_here
 ```
 

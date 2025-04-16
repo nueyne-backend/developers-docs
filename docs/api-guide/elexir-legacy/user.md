@@ -32,7 +32,6 @@ Authorization: Bearer your_token_here
 **요청 예시**
 ```http
 GET /api/v1/legacy/user/dup-check-email/test@gmail.com HTTPS
-Authorization: Bearer your_token_here
 ```
 
 **응답 예시**
@@ -74,8 +73,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 **요청 예시**
 ```http
-GET /api/v1/legacy/user/dup-check-phone/010-1234-5678 HTTPS
-Authorization: Bearer your_token_here
+GET /api/v1/legacy/user/dup-check-phone/01012345678 HTTPS
 ```
 
 **응답 예시**

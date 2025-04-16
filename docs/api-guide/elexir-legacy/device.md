@@ -550,7 +550,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
-  /api/v1/legacy/device/devlog/lasttime/{device_id}
+  /api/v1/legacy/device/my-devlog/{year-month}
 </div>
 
 **Headers**

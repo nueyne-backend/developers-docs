@@ -102,7 +102,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `email` <Badge type="danger" text="required" />| string    | 이메일 값입니다. |
 | `password` <Badge type="danger" text="required" />| string    | 비밀번호 입니다.|
-| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다. <br> - ex: 010-1234-5678|
+| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다. <br> - ex: 01012345678|
 | `username` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 이름입니다.|
 | `relation` <Badge type="danger" text="required" />| string    | 디바이스를 본인이 사용하지 않을 경우 사용자와의 관계를 입력합니다. <br> - 부모 <br> - 자녀|
 | `gender` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 성별입니다 <br> - M : 남성 <br> - F : 여성|
@@ -125,7 +125,7 @@ Content-Type: application/json
 {
     "email": "jeongtae.kim@nueyne.com",
     "password": "1234",
-    "phone": "010-1234-5858",
+    "phone": "01012345858",
     "username": "tester1234",
     "relation": "S",
     "gender": "M",
@@ -192,7 +192,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
 | `birthdate` <Badge type="danger" text="required" />| string    | 생년월일 값입니다 (yyyy-mm-dd)|
-| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다 (xxx-xxxx-xxxx)|
+| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다 (xxxxxxxxxxx)|
 | `gender` <Badge type="danger" text="required" />| string    | 성별 <br> - M : 남성 <br> - F : 여성|
 
 **요청 예시**

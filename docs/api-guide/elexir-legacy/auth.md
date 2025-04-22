@@ -73,12 +73,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 400              | Password is invalid     |  잘못된 비밀번호입니다.|
-| 401              | Sign-up not completed     |  회원가입이 완료되지 않았습니다.|
-| 403              | SMS verification required     |  SMS 인증이 완료되지 않았습니다.|
-| 404              | User not found     |  해당 유저를 찾을 수 없습니다.|
-| 410              | User is Deleted     |  회원탈퇴한 계정입니다.|
-| 423              | Access denied. Account blocked |  차단된 계정입니다.|
+| 401              | Incorrect email or password     |  이메일 또는 비밀번호가 잘못됬습니다.|
+| 403              | Email is not verified     |  이메일 인증이 완료되지 않았습니다.|
+| 410              | User is deleted     |  회원탈퇴한 계정입니다.|
+| 423              | User is blocked     |  차단된 계정입니다.|
 
 ```json
 {
@@ -102,7 +100,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `email` <Badge type="danger" text="required" />| string    | 이메일 값입니다. |
 | `password` <Badge type="danger" text="required" />| string    | 비밀번호 입니다.|
-| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다. <br> - ex: 01012345678|
+| `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다. 서버에서 국제전화번호형식으로 저장합니다. <br> - ex: 01012345678 or 010-1234-5678|
 | `username` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 이름입니다.|
 | `relation` <Badge type="danger" text="required" />| string    | 디바이스를 본인이 사용하지 않을 경우 사용자와의 관계를 입력합니다. <br> - 부모 <br> - 자녀|
 | `gender` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 성별입니다 <br> - M : 남성 <br> - F : 여성|
@@ -115,8 +113,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | `social_apple_id` <Badge type="info" text="optional" />| string    | apple 소셜 계정의 고유 sub 값|
 | `is_marketing_agree` <Badge type="danger" text="required" />| boolean    | 마케팅 수신 동의 여부입니다.|
 | `is_push_agree` <Badge type="danger" text="required" />| boolean    | 푸시 알림 동의 여부입니다. |
-| `adrs` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 거주 지역입니다. <br> [강원도, 경기도, 경상북도, 광주광역시, 대구광역시, 대전광역시, 부산광역시, 서울특별시, 세종특별자치시, 울산광역시, 인천광역시, 전라남도, 전라북도, 충청남도, 충청북도]|
-| `adrs_city` <Badge type="danger" text="required" />| string    | adrs값을 그대로 보내주세요.
+| `country` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 국가입니다. ISO 3166-1 alpha-2 형식을 따릅니다. 
 
 **요청 예시**
 ```http
@@ -132,14 +129,9 @@ Content-Type: application/json
     "gender_real": "M",
     "birthdate": "1990-01-01",
     "birthdate_real": "1990-01-01",
-    "social_google_id": "",
-    "social_kakao_id": "",
-    "social_naver_id": "",
-    "social_apple_id": "",
     "is_marketing_agree": true,
     "is_push_agree": true,
-    "adrs": "경기도",
-    "adrs_city": "경기도"
+    "country": "KR"
 }
 ```
 
@@ -166,13 +158,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
 | 400              | Email is not valid    |  유효하지 않은 이메일 형식입니다.|
-| 401             | Token is invalid    |  유효하지 않은 토큰입니다.|
 | 409              | Same email is already registered    |  이미 회원가입한 이메일입니다.|
-| 500              | Failed to sign up user    |  회원가입을 실패하였습니다.|
+| 409              | Same phone number is already registered    |  이미 회원가입한 전화번호입니다.|
+| 409              | Email send failed    |  인증 이메일 발송 실패.|
 
 ```json
 {
-  "detail": "Email is not valid"
+  "detail": "Same email is already registered"
 }
 ```
 :::
@@ -192,6 +184,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
 | `birthdate` <Badge type="danger" text="required" />| string    | 생년월일 값입니다 (yyyy-mm-dd)|
+| `country` <Badge type="danger" text="required" />| string    | 유저의 국가입니다. ISO 3166-1 alpha-2 형식을 따릅니다. 
 | `phone` <Badge type="danger" text="required" />| string    | 전화번호 값입니다 (xxxxxxxxxxx)|
 | `gender` <Badge type="danger" text="required" />| string    | 성별 <br> - M : 남성 <br> - F : 여성|
 
@@ -201,6 +194,7 @@ POST /api/v1/legacy/auth/find-id
 Content-Type: application/json
 {
   "birthdate": "2000-01-01",
+  "country": "KR",
   "phone": "010-1234-5678",
   "gender": "M"
 }
@@ -225,6 +219,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
 | 404              | User id not found     |  해당 유저를 찾을 수 없습니다.|
+| 410              | User is deleted     |  회원탈퇴한 계정입니다.|
 
 
 ```json

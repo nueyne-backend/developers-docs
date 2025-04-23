@@ -144,6 +144,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ### **기기 등록하기**
 
 기기를 수동으로 계정에 등록하는 기능입니다.
+파라미터의 unique_id 값은 서버에서 **대문자변환** 처리합니다.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -204,6 +205,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ### **기기 등록 해제하기**
 
 기기를 계정에서 등록 해제하는 기능입니다.
+파라미터의 unique_id 값은 서버에서 **대문자변환** 처리합니다.
 
 <div class="api-endpoint">
   <span class="api-method">PATCH</span>

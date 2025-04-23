@@ -195,27 +195,31 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-<!-- ### **~~이메일 아이디 조회~~ Deprecated**
+### **토큰 재발급**
 
-~~로그인 과정에서 401 ERROR 회원가입이 완료되지 않았을때 사용자를 다시 회원가입 페이지로 리다이렉트 시키기 위해~~
-~~해당 API를 통해 회원가입을 완료할 `email_user_id`를 획득하시기 바랍니다.~~
-
-더 이상 사용되지 않습니다.
+refresh_token을 이용해 token을 재발급 받는 API입니다.
+refresh_token의 유저 정보가 일치하지만 DB에 저장된 refresh_token과 일치하지 않을 경우
+중복 로그인으로 판단하여 DB의 refresh_token을 삭제합니다.
+프론트단에서는 401 Refresh token is not valid 오류에서 로그아웃으로 분기해야 합니다.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
-  /api/v1/addnox/auth/email/get-id/{email}
+  /api/v1/addnox/auth/refresh-token
 </div>
 
-**Parameters:**
+**Body Parameters**
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `email` <Badge type="danger" text="required" />| string    | 이메일 값|
+| `refresh_token` <Badge type="danger" text="required" />| string    | 기존 Refresh Token|
 
 **요청 예시**
 ```http
-POST /api/v1/addnox/auth/email/get-id/test@gmail.com
+POST /api/v1/addnox/auth/refresh-token
+Content-Type: application/json
+{
+  "refresh_token": "string"
+}
 ```
 
 
@@ -224,10 +228,14 @@ POST /api/v1/addnox/auth/email/get-id/test@gmail.com
 
 @tab <span class="ok-tab">200 OK</span>
 
-
 ```json
 {
-  "email_user_id": 0
+    "access_token": "access_token",
+    "expires_in": 900, // 15 분 
+    "refresh_token": "new_refresh_token",
+    "refresh_expires_in": 1209600,  // 2 주
+    "id": "uuid",
+    "token_type": "bearer",
 }
 ```
 @tab <span class="error-tab">ERROR</span>
@@ -238,14 +246,16 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 404              | Failed to get user id     |  해당 이메일로 사전가입된 계정이 없습니다.|
+| 401              | Token is expired     |  refresh_token이 만료됨, 로그아웃시켜야함. |
+| 401              | Could not validate credentials     |  잘못된 refresh_token, 로그아웃시켜야함.|
+| 401              | Refresh token is not valid     |  중복 로그인으로 판단, 로그아웃시켜야함.|
 
 ```json
 {
-  "detail": "Failed to get user id"
+    "detail": "Refresh token is not valid"
 }
 ```
-::: -->
+:::
 
 ### **SMS 인증 메세지 전송**
 

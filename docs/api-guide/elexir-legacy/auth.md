@@ -115,6 +115,23 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | `is_push_agree` <Badge type="danger" text="required" />| boolean    | 푸시 알림 동의 여부입니다. |
 | `country` <Badge type="danger" text="required" />| string    | 회원가입할 유저의 국가입니다. ISO 3166-1 alpha-2 형식을 따릅니다. 
 
+::: tip country 값 설명
+
+`country`는 ISO 3166-1 alpha-2 형식을 따릅니다.
+`KR (South Korea)` 또는 `KR` 같은 형식으로 보내주세요.
+
+해당 국가 코드에 따라 사용자의 전화번호를 국제 표준으로 파싱해서 저장합니다.
+
+| 국가코드 | 파싱된 번호 |
+|----|------|
+| KR (South Korea)  | +821012345678 |
+| US (United States)  | +14053007661|
+| TW (Taiwan)  | +886912341234 |
+
+등등
+
+:::
+
 **요청 예시**
 ```http
 POST   /api/v1/legacy/auth/signup
@@ -122,7 +139,7 @@ Content-Type: application/json
 {
     "email": "jeongtae.kim@nueyne.com",
     "password": "1234",
-    "phone": "01012345858",
+    "phone": "01012345858",  // DB에는 +821012345678 로 치환되어 저장
     "username": "tester1234",
     "relation": "S",
     "gender": "M",
@@ -131,7 +148,7 @@ Content-Type: application/json
     "birthdate_real": "1990-01-01",
     "is_marketing_agree": true,
     "is_push_agree": true,
-    "country": "KR"
+    "country": "KR (South Korea)"
 }
 ```
 
@@ -158,6 +175,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
 | 400              | Email is not valid    |  유효하지 않은 이메일 형식입니다.|
+| 400              | Invalid or unsupported country code    |  유효하지 않은 국가코드 형식입니다.|
+| 400              | Invalid phone number format for country    |  해당 국가의 전화번호 형식이 아닙니다.|
+| 400              | Could not parse phone number    |  유효하지 않은 전화번호 형식입니다.|
 | 409              | Same email is already registered    |  이미 회원가입한 이메일입니다.|
 | 409              | Same phone number is already registered    |  이미 회원가입한 전화번호입니다.|
 | 409              | Email send failed    |  인증 이메일 발송 실패.|
@@ -194,8 +214,8 @@ POST /api/v1/legacy/auth/find-id
 Content-Type: application/json
 {
   "birthdate": "2000-01-01",
-  "country": "KR",
-  "phone": "010-1234-5678",
+  "country": "KR (South Korea)",
+  "phone": "01012345678",
   "gender": "M"
 }
 ```
@@ -218,6 +238,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
+| 400              | Invalid or unsupported country code    |  유효하지 않은 국가코드 형식입니다.|
+| 400              | Invalid phone number format for country    |  해당 국가의 전화번호 형식이 아닙니다.|
+| 400              | Could not parse phone number    |  유효하지 않은 전화번호 형식입니다.|
 | 404              | User id not found     |  해당 유저를 찾을 수 없습니다.|
 | 410              | User is deleted     |  회원탈퇴한 계정입니다.|
 
@@ -279,6 +302,68 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```json
 {
     "detail": "Email send failed"
+}
+```
+:::
+
+### **토큰 재발급**
+
+refresh_token을 이용해 token을 재발급 받는 API입니다.
+refresh_token의 유저 정보가 일치하지만 DB에 저장된 refresh_token과 일치하지 않을 경우
+중복 로그인으로 판단하여 DB의 refresh_token을 삭제합니다.
+프론트단에서는 401 Refresh token is not valid 오류에서 로그아웃으로 분기해야 합니다.
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/legacy/auth/refresh-token
+</div>
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `refresh_token` <Badge type="danger" text="required" />| string    | 기존 Refresh Token|
+
+**요청 예시**
+```http
+POST /api/v1/legacy/auth/refresh-token
+Content-Type: application/json
+{
+  "refresh_token": "string"
+}
+```
+
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+    "access_token": "access_token",
+    "expires_in": 900, // 15 분 
+    "refresh_token": "new_refresh_token",
+    "refresh_expires_in": 1209600,  // 2 주
+    "id": "uuid",
+    "token_type": "bearer",
+}
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 401              | Token is expired     |  refresh_token이 만료됨, 로그아웃시켜야함. |
+| 401              | Could not validate credentials     |  잘못된 refresh_token, 로그아웃시켜야함.|
+| 401              | Refresh token is not valid     |  중복 로그인으로 판단, 로그아웃시켜야함.|
+
+```json
+{
+    "detail": "Refresh token is not valid"
 }
 ```
 :::

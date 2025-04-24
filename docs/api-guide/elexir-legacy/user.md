@@ -119,13 +119,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
-**Body Parameters**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `username` <Badge type="danger" text="required" />| string    | 이메일 값|
-| `password` <Badge type="danger" text="required" />| string    | 비밀번호 값|
-
 
 **요청 예시**
 ```http
@@ -140,31 +133,30 @@ Authorization: Bearer your_token_here
 
 ```json
 {
-    "email": "jeongtae.kim@nueyne.com",
-    "phone": "010-1234-5858",
-    "username": "tester1234",
+    "email": "dev@gmail.com",
+    "phone": "01012345678",
+    "username": "tester123!",
     "relation": "S",
     "gender": "M",
     "birthdate": "1990-01-01",
-    "gender_real": "M",
-    "birthdate_real": "1990-01-01",
+    "gender_real": "",
+    "birthdate_real": "",
     "social_google_id": "",
     "social_kakao_id": "",
     "social_naver_id": "",
     "social_apple_id": "",
     "is_marketing_agree": true,
     "is_push_agree": true,
-    "adrs": "경기도",
-    "adrs_city": "경기도",
-    "id": 1,
+    "country": "KR",
+    "id": 2,
     "is_email_checked": true,
     "is_active": true,
-    "regdate": "2025-04-02T15:10:58",
+    "regdate": "2025-04-07T04:41:13",
     "is_blocked": false,
     "block_type": "A",
     "block_reason": null,
     "need_to_pwd_chg": false,
-    "last_pwd_changed_at": "2025-04-02T15:10:58"
+    "last_pwd_changed_at": "2025-04-07T04:41:13"
 }
 ```
 @tab <span class="error-tab">ERROR</span>

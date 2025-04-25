@@ -186,6 +186,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
   /api/v1/legacy/user/push/set-token
 </div>
 
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+
 **Body Parameters**
 
 | Name | Type           | description             |
@@ -230,5 +237,57 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
+### **유저 계정 탈퇴**
+
+유저의 계정을 비활성화하는 API입니다. 사용자 계정을 즉시 삭제하지 않고 is_active를 0으로 바꾸는 API입니다.
+
+<div class="api-endpoint">
+  <span class="api-method">DELETE</span>
+  /api/v1/legacy/user
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**요청 예시**
+```http
+DELETE /api/v1/legacy/user HTTPS
+Authorization: Bearer your_token_here
+{
+    token: "your token"
+}
+```
+
+**응답 예시**
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+
+```json
+{
+    "statusCode": 200, 
+    "message": "User deleted successfully"
+}
+```
+@tab <span class="error-tab">ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 409              | User delete failed     | 서버 에러|
+
+```json
+{
+    "detail": "User delete failed"
+}
+```
+:::
 
 

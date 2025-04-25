@@ -278,7 +278,7 @@ Authorization: Bearer your_token_here
 {
     "survey_id": 1,
     "real_user_id": 7,
-    "created_at": "2024-12-11 14:10:00",
+    "created_at": "2024-12-11T14:10:00",   // 가운데 T 붙여도 되고 안붙여도 됩니다.
     "grade": "초등학교2학년",
     "class_type": "정규반",
     "relation": "어머니"
@@ -304,7 +304,7 @@ Authorization: Bearer your_token_here
     "class_type": null,
     "relation": null,
     "is_temp": true,
-    "created_at": "2024-12-11 14:10:00"
+    "created_at": "2024-12-11T14:10:00"
 }
 ```
 @tab <span class="error-tab">ERROR</span>

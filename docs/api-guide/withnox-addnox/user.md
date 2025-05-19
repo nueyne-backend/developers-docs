@@ -295,88 +295,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
-  /api/v1/addnox/user/create-real-user
-</div>
-
-**Headers**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
-
-**Body Parameters**
-
-| Name | Type           | description             |
-|------------------|------------------|-------------------------|
-| `first_name` <Badge type="danger" text="required" />| string    | 생성할 자식 계정의 이름입니다|
-| `last_name` <Badge type="danger" text="required" />| string  | 생성할 자식 계정의 성입니다    |
-| `birthdate` <Badge type="danger" text="required" />| string  | 생성할 자식 계정의 생년월일입니다 (yyyymmdd) <br> - 예시 : 19970101|
-| `gender` <Badge type="danger" text="required" />| string  | 사용자의 성별 <br> - M : 남성 <br> - F : 여성 <br> - N : 논바이너리 <br> - P : 알려주고 싶지 않음 |
-| `serial_code` <Badge type="danger" text="required" />| string  | 등록할 기기의 시리얼 코드 입니다   |
-
-
-**요청 예시:**
-```http
-POST /api/v1/addnox/user/create-real-user HTTPS
-Authorization: Bearer your_token_here
-Content-Type: application/json
-{
-  "first_name": "test",
-  "last_name": "kim",
-  "birthdate": "19970101",
-  "gender": "F",
-  "serial_code": "SL20401000",
-}
-```
-
-**응답 예시:**
-::: tabs
-
-@tab <span class="ok-tab">200 OK</span>
-
-```json
-{
-  "real_user_id": 1,
-  "first_name": "test",
-  "last_name": "kim",
-  "birthdate": "19970101",
-  "gender": "F",
-  "device_id": 1,
-  "now_firmware_id": 1,
-  "unique_id": "string",
-  "serial_code": "SL20401000",
-  "device_alias": "string",
-  "last_log_file_id": 0,
-  "created_at": "2024-10-28T08:09:47.889Z"
-}
-```
-@tab <span class="error-tab"> ERROR</span>
-
-**오류 응답**
-
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
-
-| HTTP status code | detail           | description             |
-|------------------|------------------|-------------------------|
-| 409              | Real user create failed| 자식 계정 생성 실패.|
-| 401              | Not authorized user  | 권한이 없는 유저입니다.     |
-| 404              | Not Found Device  | 해당 기기를 찾을 수 없습니다.     |
-| 409              | Already Connected Device  | 이미 다른 유저에게 연결된 기기입니다.     |
-
-```json
-{
-    "detail": "Already Connected Device"
-}
-```
-:::
-
-
-### **유저 자식 계정 생성 및 기기 등록(V2)**
-
-유저의 자식(자녀) 계정을 생성하고 기기를 등록합니다. API 호출의 편의성을 위해 기기를 등록하는 과정이 합쳐져 있습니다. 
-
-<div class="api-endpoint">
-  <span class="api-method">POST</span>
   /api/v2/addnox/user/create-real-user
 </div>
 
@@ -549,7 +467,7 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 **요청 예시**
 ```http
-GET https://app.nueyne.dev/api/v1/addnox/user/real-user/1 HTTPS
+PATCH https://app.nueyne.dev/api/v1/addnox/user/real-user/1 HTTPS
 Authorization: Bearer your_token_here
 Content-Type: application/json
 {
@@ -591,6 +509,73 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```json
 {
     "detail": "User is None"
+}
+```
+:::
+
+
+### **유저 전화번호 업데이트**
+
+유저의 전화번호 정보를 업데이트합니다. 
+SMS 전송 호출 -> 유저 전화번호 업데이트 API 호출
+
+<div class="api-endpoint">
+  <span class="api-method">POST</span>
+  /api/v1/addnox/user/change-phone
+</div>
+
+**Headers**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
+
+**Body Parameters**
+
+| Name | Type           | description             |
+|------------------|------------------|-------------------------|
+| `phone` <Badge type="danger" text="required" />| string    | 변경할 새로운 전화번호입니다.|
+| `validnum` <Badge type="info" text="optional" />| string  | SMS 인증 번호 입니다.     |
+
+**요청 예시**
+```http
+POST https://app.nueyne.dev/api/v1/addnox/user/change-phone HTTPS
+Authorization: Bearer your_token_here
+Content-Type: application/json
+{
+  "phone": "+821012345678",
+  "validnum": "123456"
+}
+```
+
+**응답 예시**
+
+::: tabs
+
+@tab <span class="ok-tab">200 OK</span>
+
+```json
+{
+  "statusCode": 200,
+  "message": "Root user phone updated"
+}
+```
+@tab <span class="error-tab"> ERROR</span>
+
+**오류 응답**
+
+HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+
+| HTTP status code | detail           | description             |
+|------------------|------------------|-------------------------|
+| 400              | Validation code is expired     | 인증번호가 만료되었습니다.|
+| 400              | Validation code is invalid  | 인증번호가 일치하지않습니다.     |
+| 403              | User previously deleted  | 탈퇴한 사용자입니다.     |
+| 409              | Phone number is already registered  | 이미 사용중인 전화번호입니다.     |
+
+```json
+{
+    "detail": "Validation code is expired"
 }
 ```
 :::

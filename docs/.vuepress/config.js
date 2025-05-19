@@ -49,6 +49,16 @@ export default defineUserConfig({
               ],
             },
             {
+              text: 'Elexir 2.0',
+              collapsible: true, // 접을 수 있는 옵션 (선택 사항)
+              children: [
+                '/api-guide/elexir-2.0/', // 'elexir-2.0/README.md' 파일 참조
+                // '/api-guide/elexir-2.0/auth.md', 
+                // '/api-guide/elexir-2.0/user.md', 
+                // '/api-guide/elexir-2.0/device.md', 
+              ],
+            },
+            {
               text: 'Elexir Legacy',
               collapsible: true, // 접을 수 있는 옵션 (선택 사항)
               children: [
@@ -56,6 +66,21 @@ export default defineUserConfig({
                 '/api-guide/elexir-legacy/auth.md', 
                 '/api-guide/elexir-legacy/user.md', 
                 '/api-guide/elexir-legacy/device.md', 
+              ],
+            },
+            {
+              text: 'LUX',
+              collapsible: true, // 접을 수 있는 옵션 (선택 사항)
+              children: [
+                '/api-guide/lux/', // 'lux/README.md' 파일 참조
+              ],
+            },
+            {
+              text: 'ADT Device',
+              collapsible: true, // 접을 수 있는 옵션 (선택 사항)
+              children: [
+                '/api-guide/adt/', // 'adt/README.md' 파일 참조
+                '/api-guide/adt/device.md', // 'adt/device.md' 파일 참조
               ],
             },
           ],

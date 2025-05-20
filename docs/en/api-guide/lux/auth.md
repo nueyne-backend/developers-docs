@@ -1,10 +1,10 @@
 # **Authentication**
 
-해당 페이지는 LUX 프로젝트의 인증과 관련된 API를 설명해놓은 페이지입니다.
+This page describes the APIs related to authentication for the LUX project.
 
 ## **Introduction**
 
-LUX 인증 API는 회원가입, 소셜 회원가입, 로그인, SMS 번호 인증과 같은 인증 관련 작업을 수행하는 기능입니다.
+The LUX Authentication API provides functions to perform authentication-related tasks such as user registration (sign-up), social media sign-up, login, and SMS number verification.
 
 <!-- API 흐름에 대한 시각적인 흐름도가 필요하다면 [Figma API Flow](https://www.figma.com/board/PhHUx8wj4FGvTMPBxTnzVc/ADDNOX-API-Flow?node-id=0-1&node-type=canvas&t=HyUVwsn2ws5yzZVZ-0) 페이지를 참고해주세요. -->
 

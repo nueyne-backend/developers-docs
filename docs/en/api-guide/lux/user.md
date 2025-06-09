@@ -1,29 +1,27 @@
 
-# **유저**
+# **User**
 
-해당 페이지는 Lux 프로젝트의 유저와 관련된 API를 설명해놓은 페이지입니다.
+This page describes the APIs related to authentication for the LUX project.
 
-## **소개**
+## **Introduction**
 
-Lux 유저 API는 사용자 정보 불러오기, 업데이트 등과 연관된 자식 계정 관련 작업을 수행하는 기능입니다.
-API를 호출하기전에 인증 페이지를 읽어보시길 추천드립니다.
+The LUX User API provides functions to perform user-related tasks such as Get User information, user info update and etc.
 
 <!-- API 흐름에 대한 시각적인 흐름도가 필요하다면 [Figma API Flow](https://www.figma.com/board/PhHUx8wj4FGvTMPBxTnzVc/lux-API-Flow?node-id=0-1&node-type=canvas&t=HyUVwsn2ws5yzZVZ-0) 페이지를 참고해주세요. -->
 
-## **인증**
+## **Authentication**
 
-모든 유저 API는 인증 토큰을 필요로 합니다. 인증을 하기위해서 `Authorization` header 에 인증 토큰을 넣어서 API를 호출해주세요.
-
+Some authentication APIs require an authentication token. Please include the authentication token in the `Authorization` header to make authenticated API requests.
 ```
 Authorization: Bearer your_token_here
 ```
-`your_token_here` 에 인증 과정에서 획득한 access_token으로 대체해주세요.
+Replace `your_token_here` with the access token obtained during the authentication process.
 
-## **엔드포인트**
+## **Endpoints**
 
-### **유저 정보 가져오기**
+### **Get User Information**
 
-로그인한 사용자의 정보를 불러옵니다. 응답에서 사용자가 비밀번호를 교체한지 3개월이 지낫는지, 정보 업데이트가 필요한지 여부를 Boolean 값으로 알려줍니다.
+Retrieves the information of the logged-in user. The response indicates via boolean values whether it has been more than 3 months since the user last changed their password and whether a personal information update is required.
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
@@ -36,13 +34,13 @@ Authorization: Bearer your_token_here
 |------------------|------------------|-------------------------|
 | `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
-**요청 예시**
+**Request Example**
 ```http
 GET /api/v1/lux/user/me HTTPS
 Authorization: Bearer your_token_here
 ```
 
-**응답 예시**
+**Response Example**
 ::: tabs
 
 @tab <span class="ok-tab">200 OK</span>
@@ -67,14 +65,14 @@ Authorization: Bearer your_token_here
 ```
 @tab <span class="error-tab">ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 401              | User is None     | 가입된 유저 정보가 없습니다.|
-| 401              | User is Deleted  | 회원탈퇴한 유저입니다.     |
+| 401              | User is None     | No registered user information found.|
+| 401              | User is Deleted  | The user has deleted their account.     |
 
 ```json
 {
@@ -85,9 +83,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 
 
-### **유저 정보 업데이트**
+### **Update User Information**
 
-로그인한 사용자의 정보를 업데이트 합니다.
+Updates the information of the logged-in user.
 
 <div class="api-endpoint">
   <span class="api-method">PATCH</span>
@@ -105,13 +103,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `first_name` <Badge type="info" text="optional" />| string    | 사용자의 이름(성 제외)|
-| `last_name` <Badge type="info" text="optional" />              | string  | 사용자의 성     |
-| `birthdate` <Badge type="info" text="optional" />| string  | 사용자의 생일 (yyyymmdd) <br> - 예시 : 19970101|
-| `gender` <Badge type="info" text="optional" />              | string  | 사용자의 성별 <br> - M : 남성 <br> - F : 여성 <br> - N : 논바이너리 <br> - P : 알려주고 싶지 않음 |
+| `first_name` <Badge type="info" text="optional" />| string    | User's first name.|
+| `last_name` <Badge type="info" text="optional" />              | User's last name.   |
+| `birthdate` <Badge type="info" text="optional" />| string  | User's birthdate (yyyymmdd) <br> - Example : 19970101|
+| `gender` <Badge type="info" text="optional" />              | string  | User's gender <br> - M : Male  <br> - F : Female  <br> - N :  Non-binary <br> - P : Prefer not to say |
 
 
-**요청 예시**
+**Request Example**
 ```http
 PATCH /api/v1/lux/user/root-user HTTPS
 Authorization: Bearer your_token_here
@@ -125,7 +123,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시**
+**Response Example**
 ::: tabs
 
 @tab <span class="ok-tab">200 OK</span>
@@ -144,14 +142,14 @@ Content-Type: application/json
 ```
 @tab <span class="error-tab">ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 401              | User is None     | 유저 정보를 찾을 수 없습니다.|
-| 401              | User is Deleted  | 삭제된 유저입니다.   |
+| 401              | User is None     | User information not found.|
+| 401              | User is Deleted  | User has been deleted.  |
 
 
 ```json
@@ -161,9 +159,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **유저 정책 업데이트**
+### **Update User Policy**
 
-유저의 푸시 알림 및 마케팅 알림을 업데이트합니다.
+Updates the user's push notification and marketing notification settings.
 
 <div class="api-endpoint">
   <span class="api-method">PATCH</span>
@@ -180,10 +178,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `is_push_agree` <Badge type="info" text="optional" />| boolean    | 푸시 동의|
-| `is_marketing_agree` <Badge type="info" text="optional" />| boolean  | 마케팅 수신 동의     |
+| `is_push_agree` <Badge type="info" text="optional" />| boolean    |Consent to receive push notifications.|
+| `is_marketing_agree` <Badge type="info" text="optional" />| boolean  | Consent to receive marketing communications.    |
 
-**요청 예시**
+**Request Example**
 ```http
 PATCH /api/v1/lux/user/policy HTTPS
 Authorization: Bearer your_token_here
@@ -195,7 +193,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -211,15 +209,15 @@ Content-Type: application/json
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 404              | User not found     | 가입된 유저 정보가 없습니다.|
-| 404              | User policy not found  | 생성된 유저 정책이 없습니다.     |
-| 409              | User policy update failed  | 유저의 푸시토큰이 존재하지않습니다.     |
+| 404              | User not found     | No registered user information found.|
+| 404              | User policy not found  | No user policy has been created. |
+| 409              | User policy update failed  | The user's push token does not exist. |
 
 ```json
 {
@@ -228,9 +226,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **유저 푸시 토큰 설정**
+### **Set User Push Token**
 
-유저에게 푸시 알림을 보내기 위해 FCM 토큰을 서버에 저장합니다.
+Saves the FCM token to the server to send push notifications to the user.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -247,9 +245,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `token` <Badge type="danger" text="required" />| string    | FCM 토큰|
+| `token` <Badge type="danger" text="required" />| string    |FCM Token.|
 
-**요청 예시:**
+**Request Example:**
 ```http
 POST /api/v1/lux/user/push/set-token HTTPS
 Authorization: Bearer your_token_here
@@ -260,7 +258,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시:**
+**Response Example:**
 
 ::: tabs
 
@@ -272,14 +270,14 @@ string
 
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 400              | Push permisson denied     | 푸시 정책에 동의하지 않았습니다.|
-| 409              | User push token update failed  | 토큰 형식을 다시 확인해주세요.     |
+| 400              | Push permisson denied     | Push permission has not been granted in the user policy.|
+| 409              | User push token update failed  | Please check the token format again.    |
 
 ```json
 {
@@ -289,9 +287,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
-### **유저 자식 계정 생성 및 기기 등록**
+### **Create Child User Account and Register Device**
 
-유저의 자식(자녀) 계정을 생성하고 기기를 등록합니다. API 호출의 편의성을 위해 기기를 등록하는 과정이 합쳐져 있습니다. 
+Creates a child account for the user and registers a device. The device registration process is combined for convenience of API calls.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -308,17 +306,17 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `first_name` <Badge type="danger" text="required" />| string    | 생성할 자식 계정의 전체 이름입니다|
-| `last_name` <Badge type="danger" text="required" />| string  | ~~생성할 자식 계정의 성입니다~~  빈 String 값을 보내주세요  |
-| `birthdate` <Badge type="danger" text="required" />| string  | 생성할 자식 계정의 생년월일입니다 (yyyymmdd) <br> - 예시 : 19970101|
-| `gender` <Badge type="danger" text="required" />| string  | 사용자의 성별 <br> - M : 남성 <br> - F : 여성 <br> - N : 논바이너리 <br> - P : 알려주고 싶지 않음 |
-| `serial_code` <Badge type="danger" text="required" />| string  | 등록할 기기의 시리얼 코드 입니다   |
-| `mac_id` <Badge type="danger" text="required" />| string  | 등록할 기기의 MAC 주소 입니다 (끝에 : 을 제외하고 4개의 문자 값을 대문자로 보내주세요)  |
-| `unique_id` <Badge type="danger" text="required" />| string  | 등록할 기기의 uuid 입니다   |
+| `first_name` <Badge type="danger" text="required" />| string    |The full name of the child account to be created.|
+| `last_name` <Badge type="danger" text="required" />| string  | ~~The full name of the child account to be created.~~  Please send an empty string.  |
+| `birthdate` <Badge type="danger" text="required" />| string  |The birthdate of the child account to be created (yyyymmdd) <br> - Example : 19970101|
+| `gender` <Badge type="danger" text="required" />| string  | ring	The gender of the user. <br> - M : Male  <br> - F : Female  <br> - N :  Non-binary <br> - P : Prefer not to say |
+| `serial_code` <Badge type="danger" text="required" />| string  | The serial code of the device to register.  |
+| `mac_id` <Badge type="danger" text="required" />| string  |The MAC address of the device to register (send the last 4 characters in uppercase, excluding the colon).  |
+| `unique_id` <Badge type="danger" text="required" />| string  | The UUID of the device to register.  |
 
 
 
-**요청 예시:**
+**Request Example:**
 ```http
 POST /api/v1/lux/user/create-real-user HTTPS
 Authorization: Bearer your_token_here
@@ -334,7 +332,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시:**
+**Response Example:**
 ::: tabs
 
 @tab <span class="ok-tab">200 OK</span>
@@ -357,17 +355,17 @@ Content-Type: application/json
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 409              | Real user create failed| 자식 계정 생성 실패.|
-| 400              | Serial code is not valid| 올바르지 않은 시리얼 코드입니다.|
-| 401              | Not authorized user  | 권한이 없는 유저입니다.     |
-| 404              | Not Found Device  | 해당 기기를 찾을 수 없습니다.     |
-| 409              | Already Connected Device  | 이미 다른 유저에게 연결된 기기입니다.     |
+| 409              | Real user create failed| Failed to create child account.|
+| 400              | Serial code is not valid| The serial code is invalid.|
+| 401              | Not authorized user  | User is not authorized.    |
+| 404              | Not Found Device  | The specified device could not be found.     |
+| 409              | Already Connected Device  | The device is already connected to another user. |
 
 ```json
 {
@@ -377,9 +375,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
-### **유저 자식 계정 조회**
+### **Get Child User Account**
 
-유저의 자식(자녀) 계정 정보를 조회합니다. real_user_id 값은 /api/v1/lux/device/get-all-device 로 얻을 수 있습니다.
+Retrieves the information of a user's child account. The `real_user_id` can be obtained from the `/api/v1/lux/device/get-all-device` endpoint.
 
 <div class="api-endpoint">
   <span class="api-method">GET</span>
@@ -396,16 +394,16 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer    | 자식 계정의 id|
+| `real_user_id` <Badge type="danger" text="required" />| integer    | The ID of the child account.|
 
 
-**요청 예시**
+**Request Example**
 ```http
 GET https://app.nueyne.dev/api/v1/lux/user/real-user/1 HTTPS
 Authorization: Bearer your_token_here
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -423,14 +421,14 @@ Authorization: Bearer your_token_here
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 401              | Not authorized user     | 권한이 없는 유저입니다.|
-| 404              | Real user is not found  | 자식 계정 정보를 찾을 수 없습니다.     |
+| 401              | Not authorized user     | User is not authorized.|
+| 404              | Real user is not found  | Child account information not found. |
 
 ```json
 {
@@ -439,9 +437,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **유저 자식 정보 업데이트**
+### **Update Child User Information**
 
-유저의 자식(자녀) 계정 정보를 업데이트합니다. 
+Updates the information of a user's child account.
 
 <div class="api-endpoint">
   <span class="api-method">PATCH</span>
@@ -458,14 +456,14 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `id` <Badge type="danger" text="required" />| integer    | 업데이트할 자식 계정의 real_user_id 값입니다|
-| `first_name` <Badge type="info" text="optional" />| string  | 업데이트할 자식 계정의 이름입니다     |
-| `last_name` <Badge type="info" text="optional" />| string  | 업데이트할 자식 계정의 성입니다     |
-| `birthdate` <Badge type="info" text="optional" />| string  | 업데이트할 자식 계정의 생년월일입니다 (yyyymmdd) <br> - 예시 : 19970101|
-| `gender` <Badge type="info" text="optional" />| string  | 업데이트할 자식 계정의 성별입니다 <br> - M : 남성 <br> - F : 여성 <br> - N : 논바이너리 <br> - P : 알려주고 싶지 않음 |
+| `id` <Badge type="danger" text="required" />| integer    | The `real_user_id` of the child account to update.|
+| `first_name` <Badge type="info" text="optional" />| string  | The new first name for the child account.     |
+| `last_name` <Badge type="info" text="optional" />| string  | The new last name for the child account.     |
+| `birthdate` <Badge type="info" text="optional" />| string  | The new birthdate for the child account (yyyymmdd) <br> - Example : 19970101|
+| `gender` <Badge type="info" text="optional" />| string  | The new gender for the child account. <br> - M : Male <br> - F : Female <br> - N : Non-binary <br> - P : Prefer not to say |
 
 
-**요청 예시**
+**Request Example**
 ```http
 PATCH https://app.nueyne.dev/api/v1/lux/user/real-user/1 HTTPS
 Authorization: Bearer your_token_here
@@ -479,7 +477,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -497,14 +495,14 @@ Content-Type: application/json
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 401              | Not authorized user     | 권한이 없는 유저입니다.|
-| 404              | Real user is not found  | 자식 계정 정보를 찾을 수 없습니다.     |
+| 401              | Not authorized user     | User is not authorized. |
+| 404              | Real user is not found  | Child account information not found.    |
 
 ```json
 {
@@ -514,10 +512,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
-### **유저 전화번호 업데이트**
+### **Update User Phone Number**
 
-유저의 전화번호 정보를 업데이트합니다. 
-SMS 전송 호출 -> 유저 전화번호 업데이트 API 호출
+Updates the user's phone number. Flow: Call SMS sending API -> Call this API.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -534,10 +531,10 @@ SMS 전송 호출 -> 유저 전화번호 업데이트 API 호출
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `phone` <Badge type="danger" text="required" />| string    | 변경할 새로운 전화번호입니다.|
-| `validnum` <Badge type="info" text="optional" />| string  | SMS 인증 번호 입니다.     |
+| `phone` <Badge type="danger" text="required" />| string    | The new phone number to change to.|
+| `validnum` <Badge type="info" text="optional" />| string  | The verification code received via SMS.   |
 
-**요청 예시**
+**Request Example**
 ```http
 POST https://app.nueyne.dev/api/v1/lux/user/change-phone HTTPS
 Authorization: Bearer your_token_here
@@ -548,7 +545,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -562,16 +559,16 @@ Content-Type: application/json
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 400              | Validation code is expired     | 인증번호가 만료되었습니다.|
-| 400              | Validation code is invalid  | 인증번호가 일치하지않습니다.     |
-| 403              | User previously deleted  | 탈퇴한 사용자입니다.     |
-| 409              | Phone number is already registered  | 이미 사용중인 전화번호입니다.     |
+| 400              | Validation code is expired     | Verification code has expired.|
+| 400              | Validation code is invalid  | Verification code does not match.     |
+| 403              | User previously deleted  | The user has previously deleted their account.     |
+| 409              | Phone number is already registered  | The phone number is already in use.  |
 
 ```json
 {
@@ -580,9 +577,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **유저 알림 정보 업데이트**
+### **Update User Notification Settings**
 
-유저의 알림 정보를 업데이트합니다. 모든 알림의 default 값은 false입니다.
+Updates the user's notification settings. The default value for all notifications is false.
 
 <div class="api-endpoint">
   <span class="api-method">PATCH</span>
@@ -599,13 +596,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `is_device_muted` <Badge type="danger" text="required" />| boolean    | 위드녹스 디바이스 음소거 모드 활성화 |
-| `is_device_alim_talk_enabled` <Badge type="danger" text="required" />| boolean  | 위드녹스 디바이스 전극 접촉 카카오톡 알림 활성화     |
-| `is_basestation_alert_enabled` <Badge type="danger" text="required" />| boolean  | 베이스 스테이션 센서 알림 활성화     |
+| `is_device_muted` <Badge type="danger" text="required" />| boolean    | Enable mute mode for the WithNox device. |
+| `is_device_alim_talk_enabled` <Badge type="danger" text="required" />| boolean  | Enable KakaoTalk notifications for WithNox device electrode contact.     |
+| `is_basestation_alert_enabled` <Badge type="danger" text="required" />| boolean  | Enable notifications for the base station sensor.     |
 
 
 
-**요청 예시**
+**Request Example**
 ```http
 PATCH https://app.nueyne.dev/api/v1/lux/user/notification HTTPS
 Authorization: Bearer your_token_here
@@ -617,7 +614,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -632,14 +629,14 @@ Content-Type: application/json
 ```
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 404              | User not found    | 유저 정보를 찾을 수 없습니다.|
-| 409              | User notification update failed  | 유저 알림 업데이트 실패(서버 문의).     |
+| 404              | User not found    | User information not found.|
+| 409              | User notification update failed  | User notification update failed (contact server admin).    |
 
 ```json
 {
@@ -648,9 +645,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **유저 자식 계정 삭제 및 기기 등록 해제**
+### **Delete Child User Account and Unregister Device**
 
-유저의 자식(자녀) 계정을 삭제하고 등록된 기기를 해제합니다.
+Deletes a user's child account and unregisters the associated device.
 
 <div class="api-endpoint">
   <span class="api-method">DELETE</span>
@@ -667,10 +664,10 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 | Name | Type           | description             |
 |------------------|------------------|-------------------------|
-| `real_user_id` <Badge type="danger" text="required" />| integer| 삭제할 자식 계정의 id 입니다|
-| `unique_id` <Badge type="danger" text="required" />| string| 연결 해제할 기기의 unique_id 입니다|
+| `real_user_id` <Badge type="danger" text="required" />| integer| The ID of the child account to delete.|
+| `unique_id` <Badge type="danger" text="required" />| string| The unique_id of the device to unregister.|
 
-**요청 예시**
+**Request Example**
 ```http
 DELETE /api/v1/lux/user/delete-real-user HTTPS
 Authorization: Bearer your_token_here
@@ -681,7 +678,7 @@ Content-Type: application/json
 }
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -696,15 +693,15 @@ Content-Type: application/json
 
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 401              | Not authorized user     | 권한이 없는 유저입니다.|
-| 404              | Real user is not found  | 자식 계정 정보를 찾을 수 없습니다.|
-| 409              | Real user delete failed  | 자식 계정 삭제 실패.|
+| 401              | Not authorized user     | User is not authorized.|
+| 404              | Real user is not found  | Child account information not found.|
+| 409              | Real user delete failed  | Failed to delete child account.|
 
 ```json
 {
@@ -713,9 +710,9 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 ```
 :::
 
-### **회원 탈퇴**
+### **Delete Account**
 
-유저가 회원탈퇴 또는 삭제할때 사용합니다.
+Used when a user wants to withdraw or delete their account.
 
 <div class="api-endpoint">
   <span class="api-method">DELETE</span>
@@ -728,13 +725,13 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 |------------------|------------------|-------------------------|
 | `Authorization` <Badge type="danger" text="required" />| Bearer    | access_token|
 
-**요청 예시**
+**Request Example**
 ```http
 DELETE /api/v1/lux/user/root-user HTTPS
 Authorization: Bearer your_token_here
 ```
 
-**응답 예시**
+**Response Example**
 
 ::: tabs
 
@@ -749,13 +746,13 @@ Authorization: Bearer your_token_here
 
 @tab <span class="error-tab"> ERROR</span>
 
-**오류 응답**
+**Error Response**
 
-HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아래의 표를 참고하세요.
+Provides API status codes and messages for each HTTP status code. Refer to the table below.
 
 | HTTP status code | detail           | description             |
 |------------------|------------------|-------------------------|
-| 404              | Sign in type is not found| 유저가 가입한 형식(이메일, 소셜)을 찾을 수 없습니다.|
+| 404              | Sign in type is not found| The user's sign-up method (email, social) could not be found.|
 
 
 ```json
@@ -766,31 +763,31 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 :::
 
 
-## **공통 에러 처리**
+## **Common Error Handling**
 
-모든 엔드포인트에서 공통적으로 응답하는 에러코드입니다.
+These are error codes that are commonly returned by all endpoints.
 
 **Error Response Example**
 
-- `401 Unauthorized`: 토큰이 잘못되었습니다.
+- `401 Unauthorized`: The token is invalid.
   ```json
   {
-    "detail": "Could not validate credentials" // 토큰이 잘못되었습니다.
+    "detail": "Could not validate credentials" // The token is invalid
   }
   ```
-- `401 Unauthorized`: 토큰이 만료되었습니다.
+- `401 Unauthorized`: The token has expired.
   ```json
   {
-    "detail": "Token is expired" // 토큰이 만료되었습니다.
+    "detail": "Token is expired" // The token has expired.
   }
   ```
-- `404 Not Found`: 리소스를 찾을 수 없습니다. URI를 다시 확인해주세요.
+- `404 Not Found`: The resource cannot be found. Please check the URI again.
   ```json
   {
     "detail": "Resource not found"
   }
   ```
-- `500 Internal Server Error`: 서버 에러입니다.
+- `500 Internal Server Error`: This is a server error.
   ```json
   {
     "detail": "Internal server error. Please try again later."

@@ -604,7 +604,7 @@ Authorization: Bearer your_token_here
             },
             "log_file_id": 2
         },
-        // 등등
+        // etc
     ]
 }
 ```
@@ -703,7 +703,7 @@ Provides API status codes and messages for each HTTP status code. Refer to the t
 
 ## **Common Error Handling**
 
-모든 엔드포인트에서 공통적으로 응답하는 에러코드입니다.
+These are error codes that are commonly returned by all endpoints.
 
 **Error Response Example**
 

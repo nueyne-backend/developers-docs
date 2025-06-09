@@ -75,6 +75,7 @@ export default defineUserConfig({
                 '/api-guide/lux/', // 'lux/README.md' 파일 참조
                 '/api-guide/lux/auth.md', // 'lux/auth.md' 파일 참조
                 '/api-guide/lux/device.md', // 'lux/device.md' 파일 참조
+                '/api-guide/lux/user.md', // 'lux/user.md' 파일 참조
               ],
             },
             {
@@ -111,6 +112,7 @@ export default defineUserConfig({
                 '/en/api-guide/lux/', // 'lux/README.md' 파일 참조
                 '/en/api-guide/lux/auth.md', // 'lux/auth.md' 파일 참조
                 '/en/api-guide/lux/device.md', // 'lux/device.md' 파일 참조
+                '/en/api-guide/lux/user.md', // 'lux/user.md' 파일 참조
               ],
             },
             // '/en/test', // 'test.md' 파일을 참조

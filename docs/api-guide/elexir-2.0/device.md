@@ -70,7 +70,8 @@ Authorization: Bearer your_token_here
             },
             "is_temp": false, //false = 완성된 기록, True = 완성되지 않은 사용기록
             "log_file_id": int
-        }
+        },
+        // and more..
     ],
     "survey_data": [
         {
@@ -103,7 +104,8 @@ Authorization: Bearer your_token_here
                 ]
             },
             "is_completed": true // 사전 설문 + 사후 설문 모두 완료되었는지 여부
-        }
+        },
+        // and more..
     ]
 }
 ```

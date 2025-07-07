@@ -55,7 +55,7 @@ export default defineUserConfig({
                 '/api-guide/elexir-2.0/', // 'elexir-2.0/README.md' 파일 참조
                 // '/api-guide/elexir-2.0/auth.md', 
                 // '/api-guide/elexir-2.0/user.md', 
-                // '/api-guide/elexir-2.0/device.md', 
+                '/api-guide/elexir-2.0/device.md', 
               ],
             },
             {

@@ -103,7 +103,8 @@ Authorization: Bearer your_token_here
                     "Sunlight"
                 ]
             },
-            "is_completed": true // 사전 설문 + 사후 설문 모두 완료되었는지 여부
+            "is_completed": true,  // 사전 설문 + 사후 설문 모두 완료되었는지 여부
+            "created_at": "2025-07-08T05:03:02" // UTC 포맷이기 때문에 클라이언트 단에서 Timezone을 더해야 함
         },
         // and more..
     ]

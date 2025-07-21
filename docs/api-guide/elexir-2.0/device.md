@@ -60,7 +60,7 @@ Authorization: Bearer your_token_here
             "device_id": int,
             "unique_id": string,
             "detail_data": {
-                "treatment_date": "2025-07-07T01:17:32",
+                "treatment_date": "2025-07-07T01:17:32", // 기기에서 보내준 시간이라 그대로 사용해도 무방
                 "mode": 2,
                 "finish_flag": "2",
                 "last_intensity": 1,

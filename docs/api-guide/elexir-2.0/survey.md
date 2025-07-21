@@ -65,7 +65,6 @@ Authorization: Bearer your_token_here
 
 `BackEarLeft`, `BackEarRight`, `BackHeadLeft`, `BackHeadRight`, `BackNeckLeft`, `BackNeckRight`
 
-
 <AnatomyCard />
 
 </details>

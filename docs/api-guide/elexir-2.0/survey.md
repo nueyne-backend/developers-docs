@@ -53,7 +53,7 @@ Authorization: Bearer your_token_here
 | `symptom`     | `Array<String>`       | 동반 증상 배열입니다.<br>**선택 가능 값:** `Tingling`, `Head Pounding`, `Sickness`, `Throw Up`, `Photophobic`, `Hyperacusis`, `Neck Pain` 등 |
 | `pain_area`   | `Object`              | 통증 부위 정보입니다. **(자세한 내용은 아래 '통증 부위(pain_area) 표현' 참고)** |
 | `medication`  | `Array<Object>`       | 복용한 약물 정보 배열입니다.<br>**객체 형식:** `{"medication_dose": Number, "medication_name": String}`                                         |
-| `medication.medication_name` | `String` | 약물 이름입니다.<br>**선택 가능 값:** `Zomic`, `Relpax`, `Maxalt`, `Paracetamol`, `Ibuprofen`, `Topiramate`, `Sumatriptan` |
+| `medication.medication_name` | `String` | 약물 이름입니다. <br>**선택 가능 값:** `Zomic`, `Relpax`, `Maxalt`, `Paracetamol`, `Ibuprofen`, `Topiramate`, `Sumatriptan` |
 
 ## 두통 부위 명칭
 

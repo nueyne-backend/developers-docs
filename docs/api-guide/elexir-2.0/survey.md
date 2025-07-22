@@ -22,6 +22,7 @@ Authorization: Bearer your_token_here
 ### **설문 생성하기**
 
 기기 사용 없이 설문을 단독으로 생성하는 기능입니다.
+설문을 생성할때 보내주는 datetime 값은 꼭 **UTC 기준**으로 보내주세요.
 
 <div class="api-endpoint">
   <span class="api-method">POST</span>
@@ -40,7 +41,7 @@ Authorization: Bearer your_token_here
 |------------------|------------------|-------------------------|
 | `user_id` <Badge type="danger" text="required" />| int    | 유저 아이디 |
 | `survey_data` <Badge type="danger" text="required" />| JSON    | 설문 데이터(아래 예시 참조)|
-| `survey_date` <Badge type="danger" text="required" />| datetime    | 설문을 생성할 날짜(yyyy-mm-dd hh:mm:ss)|
+| `survey_date` <Badge type="danger" text="required" />| datetime    | 설문을 생성할 날짜(UTC)(yyyy-mm-dd hh:mm:ss)|
 
 <details>
 <summary><strong>📌 survey_data 구조 보기</strong></summary>
@@ -85,7 +86,6 @@ Authorization: Bearer your_token_here
   "survey_date": "2025-07-21 10:00:00"
 }
 ```
-
 
 
 **응답 예시**

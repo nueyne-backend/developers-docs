@@ -42,7 +42,6 @@ Authorization: Bearer your_token_here
 | `survey_data` <Badge type="danger" text="required" />| JSON    | 설문 데이터(아래 예시 참조)|
 | `survey_date` <Badge type="danger" text="required" />| datetime    | 설문을 생성할 날짜(yyyy-mm-dd hh:mm:ss)|
 
-
 <details>
 <summary><strong>📌 survey_data 구조 보기</strong></summary>
 

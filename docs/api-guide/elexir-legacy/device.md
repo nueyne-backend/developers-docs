@@ -309,7 +309,6 @@ HTTP 상태 코드별로 API 상태 코드와 메시지를 제공합니다. 아�
 
 :::
 
-
 **요청 예시**
 ```http
 POST /api/v1/legacy/device/devlog HTTPS

@@ -41,7 +41,7 @@ Authorization: Bearer your_token_here
 |------------------|------------------|-------------------------|
 | `user_id` <Badge type="danger" text="required" />| int    | 유저 아이디 |
 | `survey_data` <Badge type="danger" text="required" />| JSON    | 설문 데이터(아래 예시 참조)|
-| `survey_date` <Badge type="danger" text="required" />| datetime    | 설문을 생성할 날짜(UTC)(yyyy-mm-dd hh:mm:ss)|
+| `survey_date` <Badge type="danger" text="required" />| datetime    | 설문을 생성할 날짜(UTC)(ISO 8601)|
 
 <details>
 <summary><strong>📌 survey_data 구조 보기</strong></summary>
@@ -83,7 +83,7 @@ Authorization: Bearer your_token_here
     "medication":[{"medication_dose": 2, "medication_name": "Ibuprofen"}],
     "memo": "This is test"
   },
-  "survey_date": "2025-07-21 10:00:00"
+  "survey_date": "2025-07-21 10:00:00+09:00" //가운데 T가 들어가도 괜찮습니다. ex) 2025-07-21T10:00:00+09:00
 }
 ```
 

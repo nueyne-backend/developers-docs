@@ -41,7 +41,7 @@ Authorization: Bearer your_token_here
 |------------------|------------------|-------------------------|
 | `user_id` <Badge type="danger" text="required" />| int    | 유저 아이디 |
 | `survey_data` <Badge type="danger" text="required" />| JSON    | 설문 데이터(아래 예시 참조)|
-| `survey_date` <Badge type="danger" text="required" />| datetime    | 설문을 생성할 날짜(UTC)(ISO 8601)|
+| `survey_date` <Badge type="danger" text="required" />| string    | 설문을 생성할 날짜(UTC)(ISO 8601)|
 
 <details>
 <summary><strong>📌 survey_data 구조 보기</strong></summary>
